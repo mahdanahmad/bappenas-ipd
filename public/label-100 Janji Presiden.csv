@@ -1,0 +1,101 @@
+KODE;DETIL;NOMENKLATUR
+001;Irigasi (pembangunan 1 juta ha dan rehabilitasi 3 juta ha);PANGAN
+002;Bendungan Baru (33 bendungan);PANGAN
+003;Desa Mandiri Benih (1000 desa);PANGAN
+004;Desa Organik (1000 desa);PANGAN
+005;Sawah Baru (1 juta ha);PANGAN
+006;Lahan Pertanian Kering Baru (1 juta ha);PANGAN
+007;Tata Niaga Impor Pangan (5 kebijakan);PANGAN
+008;Kilang minyak (2 unit masing-masing 300.000 barel);ENERGI
+009;Pembangkit listrik (35.000 MW);ENERGI
+010;Jaringan Gas Kota (374.000 SR);ENERGI
+011;Produksi Biofuel (7 juta kl);ENERGI
+012;Pembangunan Listrik Pedesaan (Jaringan Distribusi 8.477 kms dan Gardu Distribusi 178,6 MVA);ENERGI
+013;Pipa Transmisi Gas (6.332 km);ENERGI
+014;Unit Penyimpanan Gas (7 lokasi);ENERGI
+015;SPBG baru (118 lokasi);ENERGI
+016;Rasio Rrealisasi terhadap Rencana Pengeboran Komitmen Pasti (meningkat 22% dari rencana strategis);ENERGI
+017;Jalan baru (2.650 km);INFRASTRUKTUR
+018;Bandara baru (15 lokasi);INFRASTRUKTUR
+019;Jalur kereta api (3.258 km'sp);INFRASTRUKTUR
+020;Jalan tol baru (1.000 km);INFRASTRUKTUR
+021;Pengadaan bus rapid transit/BRT (3000 unit bis);INFRASTRUKTUR
+022;Memenuhi kekuatan pertahanan minimum (wilayah Natuna);MARITIM
+023;Peningkatan Hari Operasi 27 kapal (280 hari per kapal);MARITIM
+024;Pelelangan ikan terpadu (100 lokasi);MARITIM
+025;Rehabilitasi pesisir pantura jawa;MARITIM
+026;Pembangunan kapal perintis dan penumpang (93 unit);MARITIM
+027;Sertifikasi cara budidaya ikan yang baik/CBIB (14.000 unit);MARITIM
+028;Rute perintis (76 voyage);MARITIM
+029;Kapal perikanan > 30 Gt (125 unit);MARITIM
+030;Pengembangan kebun bibit rumput laut (133 sentra);MARITIM
+031;Jumlah perundingan perbatasan (12 perundingan);MARITIM
+032;Sinkronisasi data kawasan konservasi perairan (700 ha);MARITIM
+033;Pembangunan lapangan kontainer (10 lokasi pelabuhan);MARITIM
+034;Pengerukan Pelabuhan Belawan Medan;MARITIM
+035;Kartu Indonesia Sehat (86,4 juta kartu);KESEHATAN
+036;Penetapan iuran baru jaminan kesehatan nasional (JKN);KESEHATAN
+037;Pelayanan puskesmas sesuai standar (6.000 puskesmas);KESEHATAN
+038;Nusantara sehat (480 tenaga kesehatan);KESEHATAN
+039;Pelayanan kesehatan bergerak (150 kab/kota);KESEHATAN
+040;Rumah sehat (50.000 unit);KESEHATAN
+041;Saluran Pembuangan Air Limbah (SPAL)/Instalasi Pengelolaan Air Limbah (IPAL) terpusat dan tempat pembuangan akhir (TPA) regional (4 SPAL/IPAL dan 2 TPA);KESEHATAN
+042;Sistem penyediaan air minum/SPAM (regional 4 lokasi dan IKK 11 lokasi);KESEHATAN
+043;Persalinan di fasilitas kesehatan - Pf (2.980.102 ibu bersalin (58% dari target 75%));KESEHATAN
+044;Imunisasi dasar bayi < 1 tahun (91%);KESEHATAN
+045;Pengobatan kasus HIV (52,5%);KESEHATAN
+046;Eliminasi malaria (225 kab/kota);KESEHATAN
+047;Sarana prasarana olah raga (68 fasilitasi);KESEHATAN
+048;Data dan sistem informasi pendidikan di Kementerian Agama;PENDIDIKAN
+049;Sistem informasi pendidikan berbasis spasial Kementerian Pendidikan dan Kebudayaan;PENDIDIKAN
+050;Rehabilitasi sekolah (6.623 ruang SD, 3.079 ruang SMP, 131 paket SMA, 130 paket SMK);PENDIDIKAN
+051;Pembangunan unit sekolah baru/USB (15 unit SD, 197 unit SMP, 60 unit SMA, 35 unit SMK);PENDIDIKAN
+052;Pembangunan ruang kelas baru (2.615 ruang SD, 2151 ruang SMP, 1.858 ruang SMA, 3.100 ruang SMK);PENDIDIKAN
+053;Kartu Indonesia Pintar/KIP (18.485.270 kartu);PENDIDIKAN
+054;Beasiswa S-1 dalam negeri (257.308 mahasiswa);PENDIDIKAN
+055;Kurikulum muatan lokal (130 buku pelajaran dan 9 model kurikulum);PENDIDIKAN
+056;Subsidi untuk ilmu pengetahuan dan teknologi unggulan (12.584 laporan hasil penelitian);PENDIDIKAN
+057;Tunjangan khusus Kementerian Agama (3.943 guru);PENDIDIKAN
+058;Tunjangan khusus Kementerian Pendidikan dan Kebudayaan (52.375 guru pendidikan dasar, 7.116 guru pendidikan menengah dan 1.900 guru pendidikan anak usia dini/PAUD);PENDIDIKAN
+059;Rumah kampung deret (20.000 rumah swadaya);KEMISKINAN
+060;Penanganan kawasan permukiman kumuh (56 kab/kota);KEMISKINAN
+061;Rumah sejahtera (55.000 unit);KEMISKINAN
+062;Pelatihan keterampilan gratis (100 kabupaten);KEMISKINAN
+063;Subsidi pangan/raskin (15 kg per keluarga per bulan);KEMISKINAN
+064;Jaminan sosial tenaga kerja (36.195.298 pekerja formal dan 3.600.000 pekerja non formal);KEMISKINAN
+065;Kartu keluarga sejahtera (16.340.897 kartu);KEMISKINAN
+066;Jalan dan jalur air (122 kabupaten tertinggal);KEMISKINAN
+067;peraturan Menteri ESDM tentang pengembangan dan pemberdayaan masyarakat sekitar tambang;KEMISKINAN
+068;Redistribusi aset lahan (4,5 juta ha);KEMISKINAN
+069;Legalisasi aset lahan (4,5 juta ha);KEMISKINAN
+070;Penyelesaian tata organisasi dan tata kerja (47 k/l dan lembaga non struktural/LNS);REFORMASI BIROKRASI
+071;Kinerja penyelenggaraan pemerintah daerah tercapai (354 kab/kota);REFORMASI BIROKRASI
+072;Diklat manajemen pembangunan, kependudukan dan keuangan daerah (89 angkatan/2.670 orang);REFORMASI BIROKRASI
+073;Pelayanan terpadu satu pintu (PTSP) terhubung sistem pelayanan informasi dan perijinan investasi secara elektronik (SPIPISE) dan tracking system (50 kab/kota);REFORMASI BIROKRASI
+074;Unit kerja instansi pemerintah dengan predikat wilayah bebas korupsi (WBK)/ wilayah birokrasi bersih (WBB) (9 k/l);REFORMASI BIROKRASI
+075;Penyederhanaan proses perizinan pos, telekomunikasi, dan penyiaran (8 peraturan menteri komunikasi dan informatika);REFORMASI BIROKRASI
+076;Government public relation/GPR (seluruh K/L/D);REFORMASI BIROKRASI
+077;Rekomendasi percepatan jangka waktu proses perizinan investasi (40 rekomendasi);REFORMASI BIROKRASI
+078;Hasil pengembangan teknologi di industri (3 prototype pada tahun 2017);INDUSTRI
+079;Revitalisasi industri pupuk (5 pabrik);INDUSTRI
+080;Restrukturisasi mesin peralatan (20 IKM di wilayah I dan 12 IKM di wilayah III);INDUSTRI
+081;Pembangunan rusunawa pekerja pada kawasan industri (5 tower block di 2 kawasan industri);INDUSTRI
+082;Pembangunan kawasan industri baru (5 kawasan di wilayah I dan 5 kawasan di wilayah III);INDUSTRI
+083;Peningkatan akses transportasi pariwisata (25 kawasan strategis pariwisata nasional/KSPN);PARIWISATA
+084;Kemitraan pengelolaan jasa lingkungan wisata alam (100 unit);PARIWISATA
+085;Akses broadband internet (4.000 lokasi);PARIWISATA
+086;Pembangunan pasar tradisional;PERDAGANGAN
+087;Redistribusi dana desa di 50 kab/kota;DESA
+088;Peningkatan populasi satwa yang terancam punah (meningkat 2% dari data dasar tahun 2013);HUTAN
+089;Rehabilitasi hutan di kesatuan pengelolaan hutan (KPH) dan lahan kritis di daerah aliran sungai (DAS) prioritas (200.000 ha);HUTAN
+090;Penataan frekuensi (refarming);TEKNOLOGI
+091;Palapa ring (51 kab/kota);TEKNOLOGI
+092;Pengintegrasian perpanjangan merk dan hak cipta dengan sistem informasi pendapatan negara bukan pajak online/simponi;TEKNOLOGI
+093;Membangun science dan techno park (8 STP);TEKNOLOGI
+094;Kegiatan komunikasi informasi dan edukasi tentang pencegahan seksual pada anak;ANAK DAN PEREMPUAN
+095;Rekomendasi sinkronisasi peraturan yang belum berperspektif hak asasi manusia (HAM) kelompok rentan (16 rekomendasi);KAUM MARJINAL
+096;Penetapan Desa Adat (50 desa di 5 provinsi);KAUM MARJINAL
+097;Pemantauan isu krusial dalam pembentukan dan revisi peraturan perundang-undangan;UNDANG-UNDANG
+098;Forum multilateral isu pembangunan ekonomi, keuangan dan lingkungan hidup (85% posisi Indonesia diterima);INTERNASIONAL
+099;Pengembangan kawasan pos lintas batas negara (PLBN) terpadu (7 kawasan);KAWASAN PERBATASAN
+100;Desa broadband terpadu (50 desa);KAWASAN PERBATASAN

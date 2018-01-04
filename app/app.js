@@ -9,23 +9,18 @@ const app			= express();
 app.use(bodyParser.json({ limit: '200mb' }));
 app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 app.use(cookieParser());
-app.use(cors());
+// app.use(cors());
 
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '../js')));
+app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../stylesheets')));
+app.use(express.static(path.join(__dirname, '../views')));
+
 app.use('/', require('./routes/index'));
 
-const routeList		= [];
-routeList.forEach((o) => { app.use('/' + o, require('./routes/' + o)); });
-
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-	res.setHeader('Content-Type', 'application/json');
-	res.status(404).send(JSON.stringify({
-		response: 'FAILED',
-		statusCode: 404,
-		result: null,
-		message: 'Whooops! Where are you going?'
-	}));
+app.use((req, res) => {
+	res.redirect('/');
 });
 
 // error handlers

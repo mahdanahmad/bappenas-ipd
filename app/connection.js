@@ -5,12 +5,13 @@ const ObjectID		= MongoDB.ObjectID;
 
 const state 	= { db: null };
 
-exports.connect = (url, callback) => {
+exports.connect = (url, database, callback) => {
 	if (state.db) return callback();
 
-	MongoClient.connect(url, (err, db) => {
+	MongoClient.connect(url, (err, client) => {
 		if (err) return callback(err);
-		state.db    = db;
+		state.db    = client.db(database);
+
 		callback();
 	});
 };

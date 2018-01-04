@@ -27,8 +27,8 @@ const server	= http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 const auth		= (process.env.DB_USERNAME !== '' || process.env.DB_PASSWORD !== '') ? process.env.DB_USERNAME + ':' + process.env.DB_PASSWORD + '@' : '';
-const db_url	= 'mongodb://' + auth + process.env.DB_HOST + ':' + process.env.DB_PORT +  '/' + process.env.DB_DATABASE;
-db.connect(db_url, (err) => {
+const db_url	= 'mongodb://' + auth + process.env.DB_HOST + ':' + process.env.DB_PORT;
+db.connect(db_url, process.env.DB_DATABASE, (err) => {
 	if (err) {
 		console.error('Unable to connect to Mongo.');
 		process.exit(1);

@@ -20,7 +20,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./app/server.js localhost",
-    "serve": "pm2 start ./app/server.js --name=\"def-node-express-mongodb\" --watch"
+    "serve": "pm2 start ./app/server.js --name=\"def-node-express-mongodb\" --watch",
+	"sass": "cd stylesheets && sass --watch scss:css --style compressed"
   },
   "repository": {
     "type": "git",

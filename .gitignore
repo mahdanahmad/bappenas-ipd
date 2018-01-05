@@ -55,3 +55,4 @@ jspm_packages/
 .env
 .DS_Store
 .sass-cache
+~*

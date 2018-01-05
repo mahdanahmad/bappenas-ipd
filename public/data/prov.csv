@@ -1,38 +1,38 @@
-prov,total,alokasi
-03-Provinsi Jawa Tengah,309,862429287
-05-Provinsi Jawa Timur,288,832539822
-07-Provinsi Sumatera Utara,264,458768753
-11-Provinsi Sumatera Selatan,174,319155407
-30-Provinsi Kepulauan Bangka Beli,93,83663874
-18-Provinsi Sulawesi Tengah,138,186513272
-26-Provinsi Bengkulu,117,129270588
-35-Provinsi Kalimantan Utara,58,55357520
-06-Provinsi Aceh,202,326327702
-22-Provinsi Bali,131,147392908
-02-Provinsi Jawa Barat,274,940508656
-08-Provinsi Sumatera Barat,166,235112368
-01-Provinsi DKI Jakarta,371,3332739874
-23-Provinsi Nusa Tenggara Barat,125,249928901
-04-Provinsi DI Yogyakarta,111,153253396
-00-Pusat,578,10728005545
-21-Provinsi Maluku,139,196447890
-25-Provinsi Papua,230,309614030
-19-Provinsi Sulawesi Selatan,207,374623991
-12-Provinsi Lampung,157,297845603
-29-Provinsi Banten,125,279894315
-10-Provinsi Jambi,124,146369089
-13-Provinsi Kalimantan Barat,148,233287220
-14-Provinsi Kalimantan Tengah,138,142013111
-15-Provinsi Kalimantan Selatan,139,159285237
-16-Provinsi Kalimantan Timur,125,150262942
-32-Provinsi Kepulauan Riau,93,103943433
-09-Provinsi Riau,137,201301848
-17-Provinsi Sulawesi Utara,155,147549769
-31-Provinsi Gorontalo,93,102850133
-24-Provinsi Nusa Tenggara Timur,190,472537022
-34-Provinsi Sulawesi Barat,96,108434426
-20-Provinsi Sulawesi Tenggara,164,195718763
-28-Provinsi Maluku Utara,119,125323093
-33-Provinsi Papua Barat,119,130026940
-50-Perwakilan RI di Luar Negeri,2,6460856
-58-Asia Tenggara,1,655428
+prov,total,alokasi,code
+03-Provinsi Jawa Tengah,309,862429287,33
+05-Provinsi Jawa Timur,288,832539822,35
+07-Provinsi Sumatera Utara,264,458768753,12
+11-Provinsi Sumatera Selatan,174,319155407,16
+30-Provinsi Kepulauan Bangka Beli,93,83663874,19
+18-Provinsi Sulawesi Tengah,138,186513272,72
+26-Provinsi Bengkulu,117,129270588,17
+35-Provinsi Kalimantan Utara,58,55357520,65
+06-Provinsi Aceh,202,326327702,11
+22-Provinsi Bali,131,147392908,51
+02-Provinsi Jawa Barat,274,940508656,32
+08-Provinsi Sumatera Barat,166,235112368,13
+01-Provinsi DKI Jakarta,371,3332739874,31
+23-Provinsi Nusa Tenggara Barat,125,249928901,52
+04-Provinsi DI Yogyakarta,111,153253396,34
+00-Pusat,578,10728005545,100
+21-Provinsi Maluku,139,196447890,81
+25-Provinsi Papua,230,309614030,91
+19-Provinsi Sulawesi Selatan,207,374623991,73
+12-Provinsi Lampung,157,297845603,18
+29-Provinsi Banten,125,279894315,36
+10-Provinsi Jambi,124,146369089,15
+13-Provinsi Kalimantan Barat,148,233287220,61
+14-Provinsi Kalimantan Tengah,138,142013111,62
+15-Provinsi Kalimantan Selatan,139,159285237,63
+16-Provinsi Kalimantan Timur,125,150262942,64
+32-Provinsi Kepulauan Riau,93,103943433,21
+09-Provinsi Riau,137,201301848,14
+17-Provinsi Sulawesi Utara,155,147549769,71
+31-Provinsi Gorontalo,93,102850133,75
+24-Provinsi Nusa Tenggara Timur,190,472537022,53
+34-Provinsi Sulawesi Barat,96,108434426,76
+20-Provinsi Sulawesi Tenggara,164,195718763,74
+28-Provinsi Maluku Utara,119,125323093,82
+33-Provinsi Papua Barat,119,130026940,92
+50-Perwakilan RI di Luar Negeri,2,6460856,101
+58-Asia Tenggara,1,655428,102

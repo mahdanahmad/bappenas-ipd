@@ -128,6 +128,21 @@ class Model {
 		});
 	}
 
+	rawAggregate(_query, opts, callback) {
+		const query = [..._query];
+		for(let i = 0, l = query.length; i < l; i += 1){
+			if(_.keys(query[i])[0] === '$match'){
+				query[i].$match = _.assign({}, {deleted_at: {$exists: false }}, query[i].$match);
+			}
+		}
+
+		db.getCollection(this.tableName).aggregate(query, opts).toArray((err, result) => {
+			if (err) { return callback(err); }
+
+			callback(null, result);
+		});
+	}
+
 }
 
 module.exports = Model;

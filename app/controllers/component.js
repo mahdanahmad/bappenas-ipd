@@ -32,9 +32,31 @@ module.exports.filters = (category_name, callback) => {
 	let message         = 'Get all filters for ' + category_name + ' success.';
 	let result          = null;
 
+	const categoriesMap	= {
+		'Tematik': 'tematik_nomen',
+        'Nawacita': 'nawacita_nomen',
+		'100 Janji Presiden': 'janpres_group',
+        'Prioritas Nasional': 'pn_nomen',
+	}
+
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+		},
+		(filters, flowCallback) => {
+			let column	= categoriesMap[category_name];
+			let match	= {};
+			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+
+			krisna.rawAggregate([
+				{ '$match': match },
+				{ '$group': { _id: '$' + column, total: { '$sum': '$alokasi' }} }
+			], {}, (err, result) => {
+				if (err) { flowCallback(err); } else {
+					let formatted	= _.chain(result).flatMap((o) => (o._id.split(' | ').map((id) => ({ id, total: o.total })))).groupBy('id').mapValues((o) => _.sumBy(o, 'total')).value();
+					flowCallback(err, filters.map((o) => ({ name: o, anggaran: (formatted[o] || 0) })));
+				}
+			});
 		}
 	], (err, asyncResult) => {
 		if (err) {

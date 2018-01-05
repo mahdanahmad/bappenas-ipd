@@ -26,7 +26,7 @@ module.exports.categories = (callback) => {
 	});
 }
 
-module.exports.filters = (category_name, callback) => {
+module.exports.filters = (category_name, location, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get all filters for ' + category_name + ' success.';
@@ -47,6 +47,7 @@ module.exports.filters = (category_name, callback) => {
 			let column	= categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+			if (location) { match.location = location; }
 
 			krisna.rawAggregate([
 				{ '$match': match },

@@ -32,6 +32,7 @@ module.exports.filters = (category_name, location, callback) => {
 	let message         = 'Get all filters for ' + category_name + ' success.';
 	let result          = null;
 
+	const defaultColor	= '#EBDCB2';
 	const categoriesMap	= {
 		'Tematik': 'tematik_nomen',
         'Nawacita': 'nawacita_nomen',
@@ -41,9 +42,12 @@ module.exports.filters = (category_name, location, callback) => {
 
 	async.waterfall([
 		(flowCallback) => {
-			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
-		(filters, flowCallback) => {
+		(categories, flowCallback) => {
+			let filters	= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let colors	= _.get(categories, 'colors', {});
+
 			let column	= categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
@@ -55,7 +59,7 @@ module.exports.filters = (category_name, location, callback) => {
 			], {}, (err, result) => {
 				if (err) { flowCallback(err); } else {
 					let formatted	= _.chain(result).flatMap((o) => (o._id.split(' | ').map((id) => ({ id, total: o.total })))).groupBy('id').mapValues((o) => _.sumBy(o, 'total')).value();
-					flowCallback(err, filters.map((o) => ({ name: o, anggaran: (formatted[o] || 0) })));
+					flowCallback(err, filters.map((o) => ({ name: o, anggaran: (formatted[o] || 0), color: _.get(colors, o, defaultColor) })));
 				}
 			});
 		}

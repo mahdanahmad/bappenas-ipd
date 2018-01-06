@@ -2,7 +2,7 @@ const util		= require('util');
 const Model		= require('./model');
 
 const table		= 'categories';
-const fillable	= ['name', 'filters'];
+const fillable	= ['name', 'filters', 'colors'];
 const required	= [];
 const preserved	= [];
 const hidden	= [];

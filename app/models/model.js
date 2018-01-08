@@ -128,6 +128,13 @@ class Model {
 		});
 	}
 
+	distinct(key, query, callback) {
+		db.getCollection(this.tableName).distinct(key, query, (err, result) => {
+			if (err) { return callback(err); }
+			callback(null, result);
+		});
+	}
+
 	rawAggregate(_query, opts, callback) {
 		const query = [..._query];
 		for(let i = 0, l = query.length; i < l; i += 1){

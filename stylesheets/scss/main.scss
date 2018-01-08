@@ -4,6 +4,8 @@
 @import "components/content";
 @import "components/selection";
 
+@import "viz/categories";
+
 a { cursor: pointer; text-decoration: none; color: black; }
 ul { list-style-type: none; margin: 0px; padding: 0px; }
 img { max-width: 100%; height: auto; }

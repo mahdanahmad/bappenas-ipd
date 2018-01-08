@@ -26,13 +26,13 @@ MongoClient.connect(db_url, (err, client) => {
 			csv
 				.fromPath(data_root + "prov.csv", params)
 				.on("data", (row) => {
-					data.push({ old: row.prov.split('-')[0], new: row.code });
+					data.push({ old: row.prov.split('-')[0], new: row.code, name: row.prov.split('-')[1].replace('Provinsi ', '') });
 				})
 				.on("end", () => flowCallback(null, { data }));
 		},
 		(proceed, flowCallback) => {
 			async.each(proceed.data, (o, eachCallback) => {
-				db.collection('krisna').update({ provinsi_kode: o.old }, { $set: { location: o.new } }, { multi: true }, (err, result) => eachCallback(err));
+				db.collection('krisna').update({ provinsi_kode: o.old }, { $set: { provinsi_nomen: o.name, location: o.new } }, { multi: true }, (err, result) => eachCallback(err));
 			}, (err) => {
 				flowCallback(err);
 			})

@@ -74,3 +74,55 @@ module.exports.filters = (category_name, location, callback) => {
 		callback({ response, status_code, message, result });
 	});
 }
+
+module.exports.kementerian = (callback) => {
+	let response        = 'OK';
+	let status_code     = 200;
+	let message         = 'Get all categories success.';
+	let result          = null;
+
+	async.waterfall([
+		(flowCallback) => {
+			krisna.rawAggregate([
+				{ '$group': { _id: { id: '$kementerian_kode', name: '$kementerian_nomen' }}},
+				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
+				{ '$sort': { name: 1 }}
+			], {}, (err, result) => flowCallback(err, result));
+		}
+	], (err, asyncResult) => {
+		if (err) {
+			response    = 'FAILED';
+			status_code = 400;
+			message     = err;
+		} else {
+			result      = asyncResult;
+		}
+		callback({ response, status_code, message, result });
+	});
+}
+
+module.exports.location = (callback) => {
+	let response        = 'OK';
+	let status_code     = 200;
+	let message         = 'Get all categories success.';
+	let result          = null;
+
+	async.waterfall([
+		(flowCallback) => {
+			krisna.rawAggregate([
+				{ '$group': { _id: { id: '$location', name: '$provinsi_nomen' }}},
+				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
+				{ '$sort': { name: 1 }}
+			], {}, (err, result) => flowCallback(err, result));
+		}
+	], (err, asyncResult) => {
+		if (err) {
+			response    = 'FAILED';
+			status_code = 400;
+			message     = err;
+		} else {
+			result      = asyncResult;
+		}
+		callback({ response, status_code, message, result });
+	});
+}

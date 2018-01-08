@@ -12,5 +12,11 @@ router.get('/api/categories', (req, res, next) => {
 router.get('/api/filters/:category_name/:location?', (req, res, next) => {
 	component.filters(req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
 });
+router.get('/api/kementerian', (req, res, next) => {
+	component.kementerian((result) => { res.status(result.status_code).json(result); });
+});
+router.get('/api/location', (req, res, next) => {
+	component.location((result) => { res.status(result.status_code).json(result); });
+});
 
 module.exports = router;

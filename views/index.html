@@ -17,8 +17,9 @@
         <link rel="icon" type="image/x-icon" href="pulselab.ico">
         <link rel="shortcut icon" type="image/x-icon" href="pulselab.ico">
 
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"> -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-dropdown/2.0.3/jquery.dropdown.min.css">
 
 		<link rel="stylesheet" href="css/main.css">
 
@@ -32,6 +33,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.7/d3-queue.min.js"></script>
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dropdown/2.0.3/jquery.dropdown.min.js"></script>
+
+		<script src="helper.js"></script>
+		<script src="categories.js"></script>
 		<script src="main.js"></script>
     </head>
     <body class="">
@@ -45,12 +50,43 @@
 			</div>
 			<div id="content-wrapper">
 				<div id="header">
-
+					<div id="filters-selection">
+						<div id="filters-head">
+							<img src="images/garuda.png">
+							<div id="head-title" class="uppercase cursor-default">Integrated Presidential Dashboard</div>
+						</div>
+						<div id="filters-location" class="filters-down uppercase cursor-pointer" data-jq-dropdown="#dropdown-location">
+							<label>Lokasi</label>
+							<div class="filters-selected">
+								<div class="filters-value">Nasional</div>
+								<i class="fa fa-caret-down" aria-hidden="true"></i>
+							</div>
+						</div>
+						<div id="filters-kementerian" class="filters-down uppercase cursor-pointer" data-jq-dropdown="#dropdown-kementerian">
+							<label>Kementerian</label>
+							<div class="filters-selected">
+								<div class="filters-value">Semua Kementerian</div>
+								<i class="fa fa-caret-down" aria-hidden="true"></i>
+							</div>
+						</div>
+					</div>
+					<div id="categories-selection">
+						<div id="categories-head">
+							<span class="uppercase"></span>
+							<div id="categories-hamburger" class="x-sign cursor-pointer hidden"><span></span><span></span><span></span></div>
+						</div>
+						<div id="categories-left-arrow" class="arrows cursor-pointer nonactive"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+						<div id="categories-content"></div>
+						<div id="categories-right-arrow" class="arrows cursor-pointer"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+					</div>
 				</div>
 				<div id="content">
-					
+
 				</div>
 			</div>
 		</div>
+
+		<div id="dropdown-location" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right"><ul class="jq-dropdown-menu cursor-pointer"><li class='uppercase cursor-pointer' onclick="changeDrop('location', '0', 'Nasional')">Nasional</li></ul></div>
+		<div id="dropdown-kementerian" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right"><ul class="jq-dropdown-menu cursor-pointer"><li class='uppercase cursor-pointer' onclick="changeDrop('kementerian', '0', 'Semua Kementerian')">Semua Kementerian</li></ul></div>
     </body>
 </html>

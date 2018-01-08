@@ -4,7 +4,7 @@
 	#selection-wrapper {
 		position: relative; top: 50%; @include transform(translate(0px, -75%));
 		img { width: 10vh; margin: auto; display: block; }
-		#title-wrapper { width: 25%; height: 13vh; margin: auto; text-align: center; background: #d3232a; padding: 25px 20px; margin-top: 20px; font-size: 16px; letter-spacing: 2px; border-radius: 3px; }
+		#title-wrapper { width: 25%; height: 13vh; margin: auto; text-align: center; background: $red-color; padding: 25px 20px; margin-top: 20px; font-size: 14px; letter-spacing: 2px; border-radius: 3px; }
 		#categories-wrapper {
 			background-color: #525254; border-radius: 3px;
 			position: relative; left: 50%; top: -12vh; @include clearfix(); @include transform(translate(-50%, 0));

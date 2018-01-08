@@ -1,6 +1,7 @@
 @import "statics";
 @import "mixins";
 
+@import "components/content";
 @import "components/selection";
 
 a { cursor: pointer; text-decoration: none; color: black; }

@@ -54,7 +54,7 @@
 				&.nonactive { color: lightslategrey; cursor: not-allowed!important; background: rgba($default-back, .125); }
 			}
 			#categories-content {
-				height: calc(100% - #{$head-height}); width: calc(100% - #{$arrow-width * 2});
+				height: calc(100% - #{$head-height}); width: calc(100% - #{$arrow-width * 2}); overflow: hidden;
 			}
 		}
 	}

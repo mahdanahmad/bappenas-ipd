@@ -2,6 +2,7 @@ const dest		= '#categories-content';
 const id		= 'categories-viz';
 
 const shown		= 9;
+const textMarg	= 10;
 let space		= 0;
 let maxWidth	= 0;
 
@@ -14,7 +15,7 @@ function createCategoriesBar(data) {
 	space				= (canvasWidth / shown);
 	maxWidth			= Math.floor(-((space * data.length) - canvasWidth));
 
-	if (shown >= data.length) { $( '#categories-right-arrow' ).addClass('nonactive'); }
+	if (shown >= data.length) { $( '#categories-right-arrow' ).addClass('nonactive'); } else { $( '#categories-right-arrow' ).removeClass('nonactive'); }
 
 	let margin 			= { top: 0, right: 0, bottom: 0, left: 0 };
 	let width			= space * data.length;
@@ -34,7 +35,7 @@ function createCategoriesBar(data) {
 	let groupBar	= svg.selectAll('group-bar').data(data).enter().append('g');
 
 	groupBar.append("rect")
-		  .attr("class", "bar fill cursor-pointer")
+		  .attr("class", "bar fill")
 		  .attr("fill", (o) => (o.color || '#5a6569'))
 		  .attr("x", (o) => (x(o.color)))
 		  .attr("y", height)
@@ -44,12 +45,37 @@ function createCategoriesBar(data) {
 		  .attr("height", 0);
 
 	groupBar.append("rect")
-		  .attr("class", "bar cream cursor-pointer")
+		  .attr("class", "bar cream")
 		  .attr("fill", (o) => (o.color || '#5a6569'))
 		  .attr("x", (o) => (x(o.color)))
 		  .attr("y", (height - 2))
 		  .attr("width", x.bandwidth())
 		  .attr("height", 2);
+
+  	groupBar.append('text')
+  		.attr('class', 'detil-idr')
+		.attr('text-anchor', 'middle')
+  		.attr('y', (height - textMarg))
+  		.attr('x', (o) => (x(o.color) + (x.bandwidth() / 2)))
+  		.text((o) => (nFormatter(o.anggaran)));
+
+	groupBar.append('foreignObject')
+		.attr('class', 'node')
+		.attr('x', (o) => (x(o.color)))
+		.attr('y', 0)
+		.attr('width', space)
+		.attr('height', height * 2 / 5)
+		.append('xhtml:div')
+			.attr('class', 'cursor-default')
+			.text((o, i) => ((i + 1) + '. ' + o.name))
+
+	groupBar.append('rect')
+		.attr('class', 'cate-overlay cursor-pointer')
+		.attr('x', (o) => (x(o.color)))
+		.attr('y', 0)
+		.attr('width', space)
+		.attr('height', height);
+
 
 	changeCateHeight(formData(data));
 
@@ -101,4 +127,6 @@ function changeCateHeight(data) {
 	canvas.selectAll('.bar.cream').transition(transition)
         .attr('y', (o) => (data[o.color].cream));
 
+	canvas.selectAll('.detil-idr').transition(transition)
+		.attr('y', (o) => (data[o.color].cream - textMarg))
 }

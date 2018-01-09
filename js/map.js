@@ -23,7 +23,7 @@ function createMaps() {
 	let height			= canvasHeight - margin.top - margin.bottom;
 
 	let projection		= d3.geoEquirectangular()
-		.scale((width * 4 / 5) + 225)
+		.scale((width - (height / 2)) + 225)
 		.rotate([-120, 1])
 		.translate([(width * 6 / 10) + 55, (height / 2) - 50]);
 	path	= d3.geoPath().projection(projection);
@@ -47,6 +47,8 @@ function createMaps() {
 			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 16) * (i + 1)) + (height / 4) * (i + 0.5)) + ')'));
 
 	addition.append("circle")
+		.attr('id', (o) => ('prov-' + o.kode))
+		.attr('class', 'province')
 	    .attr("r", (height / 8))
 	    // .attr("stroke","black")
 	    .attr("fill", defMapColor);
@@ -71,4 +73,8 @@ function createMaps() {
 					.attr('vector-effect', 'non-scaling-stroke')
 					.style("fill", defMapColor);
 	});
+}
+
+function colorMap(data) {
+	data.forEach((o) => { d3.select('#prov-' + o._id).style('fill', o.color); });
 }

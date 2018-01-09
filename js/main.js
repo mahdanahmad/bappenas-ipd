@@ -29,9 +29,8 @@ function changeCategory(val) {
 	$( '#categories-head > span' ).html(val);
 	$( '#categories-hamburger' ).removeClass('x-sign');
 
-	$.get('/api/filters/' + val, (data) => {
-		createCategoriesBar(data.result);
-	});
+	$.get('/api/filters/' + val, (data) => { createCategoriesBar(data.result); });
+	$.get('/api/maps/' + val, (data) => { colorMap(data.result); });
 }
 
 function changeDrop(state, id, name) {

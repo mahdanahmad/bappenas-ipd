@@ -4,13 +4,20 @@ $foreign-lines-to-show: 5;
 
 svg#categories-viz {
 	#grid-wrapper { stroke: lightgray; stroke-dasharray: 1.5; stroke-width: .25; }
-	.bar.fill { fill-opacity: .35; }
-	foreignObject {
-		div {
-			padding: 10px; padding-bottom: 0; display: block; display: -webkit-box; height: $foreign-font-size * $foreign-line-height * $foreign-lines-to-show; margin: 0;
-			font-size: $foreign-font-size; line-height: $foreign-line-height; -webkit-line-clamp: $foreign-lines-to-show;
-			-webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+	.group-bar {
+		.bar.fill { fill-opacity: .35; }
+		foreignObject {
+			div {
+				padding: 10px; padding-bottom: 0; display: block; display: -webkit-box; height: $foreign-font-size * $foreign-line-height * $foreign-lines-to-show; margin: 0;
+				font-size: $foreign-font-size; line-height: $foreign-line-height; -webkit-line-clamp: $foreign-lines-to-show;
+				-webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+			}
+		}
+		rect.cate-overlay { fill: transparent; }
+		&.unintended {
+			.bar { opacity: .1; }
+			text { fill: lightslategrey!important; }
+			rect.cate-overlay { fill: rgba(black, .2); }
 		}
 	}
-	rect.cate-overlay { fill: transparent; }
 }

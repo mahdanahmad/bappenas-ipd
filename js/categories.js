@@ -32,7 +32,10 @@ function createCategoriesBar(data) {
 		.append('g')
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	let groupBar	= svg.selectAll('group-bar').data(data).enter().append('g');
+	let groupBar	= svg.selectAll('group-bar').data(data).enter()
+		.append('g')
+			.attr('id', (o) => (o.color.replace('#', '')))
+			.attr('class', 'group-bar');
 
 	groupBar.append("rect")
 		  .attr("class", "bar fill")
@@ -74,8 +77,8 @@ function createCategoriesBar(data) {
 		.attr('x', (o) => (x(o.color)))
 		.attr('y', 0)
 		.attr('width', space)
-		.attr('height', height);
-
+		.attr('height', height)
+		.on('click', (o) => categorySelect(o));
 
 	changeCateHeight(formData(data));
 
@@ -129,4 +132,9 @@ function changeCateHeight(data) {
 
 	canvas.selectAll('.detil-idr').transition(transition)
 		.attr('y', (o) => (data[o.color].cream - textMarg))
+}
+
+function categorySelect(data) {
+	console.log('.group-bar' + data.color);
+	$( '.group-bar' + data.color ).toggleClass('unintended');
 }

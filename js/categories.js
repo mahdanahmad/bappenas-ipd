@@ -1,5 +1,5 @@
-const dest		= '#categories-content';
-const id		= 'categories-viz';
+let cate_dest	= '#categories-content';
+let cate_id		= 'categories-viz';
 
 const shown		= 9;
 const textMarg	= 10;
@@ -7,10 +7,10 @@ let space		= 0;
 let maxWidth	= 0;
 
 function createCategoriesBar(data) {
-	d3.select(dest).selectAll("svg").remove();
+	d3.select(cate_dest).selectAll("svg").remove();
 
-	let canvasWidth		= $(dest).outerWidth(true);
-	let canvasHeight	= $(dest).outerHeight(true);
+	let canvasWidth		= $(cate_dest).outerWidth(true);
+	let canvasHeight	= $(cate_dest).outerHeight(true);
 
 	space				= (canvasWidth / shown);
 	maxWidth			= Math.floor(-((space * data.length) - canvasWidth));
@@ -24,9 +24,8 @@ function createCategoriesBar(data) {
 	let x				= d3.scaleBand().rangeRound([0, width]).padding(0).domain(data.map((o) => (o.color)));
     let y 				= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-	let svg	= d3.select(dest).append("svg")
-		.attr("id", id)
-    	// .attr("width", canvasWidth)
+	let svg	= d3.select(cate_dest).append("svg")
+		.attr("id", cate_id)
     	.attr("width", width)
         .attr("height", canvasHeight)
 		.append('g')
@@ -101,7 +100,7 @@ function createCategoriesBar(data) {
 
 function moveCategories() {
 	if (!$(this).hasClass('nonactive')) {
-		let canvas	= d3.select('#' + id + ' > g');
+		let canvas	= d3.select('#' + cate_id + ' > g');
 		let current	= parseFloat(canvas.attr('transform').replace('translate(', '').split(',')[0]);
 
 		let next	= current + (_.includes($( this ).attr('id'), 'left') ? space : -space);
@@ -121,7 +120,7 @@ function changeCateHeight(data) {
         .duration(time)
         .ease(d3.easeLinear);
 
-	let canvas		= d3.select('#' + id);
+	let canvas		= d3.select('#' + cate_id);
 
 	canvas.selectAll('.bar.fill').transition(transition)
         .attr('y', (o) => (data[o.color].fill))
@@ -135,6 +134,6 @@ function changeCateHeight(data) {
 }
 
 function categorySelect(data) {
-	console.log('.group-bar' + data.color);
 	$( '.group-bar' + data.color ).toggleClass('unintended');
+
 }

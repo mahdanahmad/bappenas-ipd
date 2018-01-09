@@ -6,6 +6,8 @@ $( document ).ready(() => {
 	$.get('/api/location', (data) => { $( '#dropdown-location > ul' ).append( data.result.map((o) => ("<li class='uppercase cursor-pointer' onclick='changeDrop(\"location\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('') ); });
 	$.get('/api/kementerian', (data) => { $( '#dropdown-kementerian > ul' ).append( data.result.map((o) => ("<li class='uppercase cursor-pointer' onclick='changeDrop(\"kementerian\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('') ); });
 
+	createMaps();
+
 	changeCategory('Nawacita');
 
 	$( '#categories-hamburger' ).click(function() {

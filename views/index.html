@@ -34,8 +34,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.7/d3-queue.min.js"></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dropdown/2.0.3/jquery.dropdown.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-endless-scroll/1.8.0/js/jquery.endless-scroll.min.js"></script>
 
+		<script src="statics.js"></script>
 		<script src="helper.js"></script>
+		<script src="connector.js"></script>
+
 		<script src="categories.js"></script>
 		<script src="map.js"></script>
 		<script src="main.js"></script>
@@ -82,12 +86,40 @@
 					</div>
 				</div>
 				<div id="content">
+					<div id="prov-overview" class="hidden cursor-default">
+						<div id="prov-name" class="uppercase"></div>
+						<div id="prov-anggaran" class="prov-detil"><label>Total Budget</label><span></span></div>
+						<div id="prov-output" class="prov-detil"><label>Jumlah Proyek</label><span></span></div>
+						<div id="prov-kementerian" class="prov-detil"><label>Jumlah K/L</label><span></span></div>
+					</div>
+				</div>
+				<div id="detil-content">
+					<div id="detil-header">
+						<div id="search-wrapper" class="float-right">
+							<label for="detil-search"><i class="fa fa-search" aria-hidden="true"></i></label>
+							<input id="detil-search" type="text" value="" placeholder="Cari output">
+						</div>
+					</div>
+					<div id="detil-wrapper">
+						<table>
+							<thead>
+								<tr class="cursor-default">
+									<th class="table-kegiatan">Kegiatan</th>
+									<th class="table-output">Output</th>
+									<th class="table-kl">Kementerian / Lembaga</th>
+									<th class="table-anggaran">Anggaran</th>
+								</tr>
+							</thead>
+							<tbody>
 
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div id="dropdown-location" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right"><ul class="jq-dropdown-menu cursor-pointer"><li class='uppercase cursor-pointer' onclick="changeDrop('location', '0', 'Nasional')">Nasional</li></ul></div>
-		<div id="dropdown-kementerian" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right"><ul class="jq-dropdown-menu cursor-pointer"><li class='uppercase cursor-pointer' onclick="changeDrop('kementerian', '0', 'Semua Kementerian')">Semua Kementerian</li></ul></div>
+		<div id="dropdown-location" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-prov-default" class='uppercase cursor-pointer' onclick="changeDrop('location', null, 'Nasional')">Nasional</li></ul></div>
+		<div id="dropdown-kementerian" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-kl-default" class='uppercase cursor-pointer' onclick="changeDrop('kementerian', '0', 'Semua Kementerian')">Semua Kementerian</li></ul></div>
     </body>
 </html>

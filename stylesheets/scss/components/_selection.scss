@@ -4,12 +4,12 @@
 	#selection-wrapper {
 		position: relative; top: 50%; @include transform(translate(0px, -75%));
 		img { width: 10vh; margin: auto; display: block; }
-		#title-wrapper { width: 25%; height: 13vh; margin: auto; text-align: center; background: $red-color; padding: 25px 20px; margin-top: 20px; font-size: 14px; letter-spacing: 2px; border-radius: 3px; }
+		#title-wrapper { width: 27.5%; height: 15vh; margin: auto; text-align: center; background: $red-color; padding: 25px 20px; margin-top: 20px; font-size: 12px; letter-spacing: 2px; border-radius: 3px; }
 		#categories-wrapper {
 			background-color: #525254; border-radius: 3px;
-			position: relative; left: 50%; top: -12vh; @include clearfix(); @include transform(translate(-50%, 0));
+			position: relative; left: 50%; top: -14vh; @include clearfix(); @include transform(translate(-50%, 0));
 			.ipd-categories {
-				width: 10vw; display: inline-block; text-align: center; padding: 35px 0px; position: relative;
+				width: 10vw; display: inline-block; text-align: center; padding: 30px 0px; position: relative;
 				&:not(:last-child):after { content: ''; position: absolute; top: 12.5%; right: 0px; height: 70%; width: 1px; background: darkgray; }
 				&:hover { background: rgba(black, .2); }
 			}

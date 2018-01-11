@@ -6,13 +6,13 @@
 		#filters-head {
 			@include clearfix();
 			img { width: 28%; margin-right: 7%; display: inline-block; float: left; }
-			#head-title { width: 65%; display: inline-block; float: right; font-size: 14px; line-height: 20px; letter-spacing: 2px; }
+			#head-title { width: 65%; display: inline-block; float: right; font-size: 13px; line-height: 16px; letter-spacing: 2px; }
 		}
 		.filters-down {
-			margin-top: 20px;
+			margin-top: 15px;
 			label { color: lightgrey; font-size: 8px; }
 			.filters-selected {
-				padding: 5px; font-size: 12px; border-bottom: 1px solid lightgrey; margin-top: 2.5px; position: relative;
+				padding: 2.5px; font-size: 11px; border-bottom: 1px solid lightgrey; margin-top: 2.5px; position: relative;
 				i { position: absolute; right: 5px; color: lightgrey; }
 				.filters-value { display: inline-block; @include ellipsis(95%); }
 			}

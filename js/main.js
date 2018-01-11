@@ -3,9 +3,6 @@ let category	= '';
 $( document ).ready(() => {
 	$.get('/api/categories', (data) => { $( '#categories-wrapper' ).html( data.result.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
 
-	$.get('/api/location', (data) => { $( '#dropdown-location > ul' ).append( data.result.map((o) => ("<li class='uppercase cursor-pointer' onclick='changeDrop(\"location\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('') ); });
-	$.get('/api/kementerian', (data) => { $( '#dropdown-kementerian > ul' ).append( data.result.map((o) => ("<li class='uppercase cursor-pointer' onclick='changeDrop(\"kementerian\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('') ); });
-
 	createMaps();
 
 	changeCategory('Nawacita');
@@ -17,6 +14,15 @@ $( document ).ready(() => {
 			$( '#selection' ).slideDown();
 		}
 		$( this ).toggleClass('x-sign');
+	});
+
+	$('#detil-wrapper > table > tbody').endlessScroll({
+		fireOnce: false,
+		fireDelay: false,
+		loader: '<div id="loader"><li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li><div>',
+		callback: (p) => {
+			appendAdditionTable();
+		}
 	});
 });
 
@@ -31,10 +37,25 @@ function changeCategory(val) {
 
 	$.get('/api/filters/' + val, (data) => { createCategoriesBar(data.result); });
 	$.get('/api/maps/' + val, (data) => { colorMap(data.result); });
+
+	$.get('/api/location/' + val, (data) => {
+		$( '#dropdown-location > ul' ).html( constructDropdown(data, 'prov') );
+	});
+	$.get('/api/kementerian/' + val, (data) => {
+		$( '#dropdown-kementerian > ul' ).html( constructDropdown(data, 'kl') );
+	});
+
 }
 
 function changeDrop(state, id, name) {
 	$( '#dropdown-' + state ).jqDropdown('hide');
 	$( '#filters-' + state + ' .filters-value').html(name);
+
+	if (state == 'location') { zoomProv(id, true); }
+
+}
+
+function constructDropdown(data, state) {
+	return $( '#drop-' + state + '-default' )[0].outerHTML + data.result.map((o) => ("<li id='drop-" + state + "-" + o.id + "' class='uppercase cursor-pointer' onclick='changeDrop(\"" + (state == 'prov' ? 'location' : 'kementerian') + "\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('');
 
 }

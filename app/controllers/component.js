@@ -75,11 +75,13 @@ module.exports.filters = (category_name, location, callback) => {
 	});
 }
 
-module.exports.maps = (category_name, callback) => {
+module.exports.maps = (input, category_name, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get maps data for ' + category_name + ' success.';
 	let result          = null;
+
+	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -89,13 +91,12 @@ module.exports.maps = (category_name, callback) => {
 			krisna.distinct('location', {}, (err, result) => flowCallback(err, categories, result));
 		},
 		(categories, locations, flowCallback) => {
-			// console.log(locations);
-			let filters	= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let filt	= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
 			let colors	= _.get(categories, 'colors', {});
 
 			let column	= categoriesMap[category_name];
 			let match	= {};
-			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -123,15 +124,108 @@ module.exports.maps = (category_name, callback) => {
 	});
 }
 
-module.exports.kementerian = (callback) => {
+module.exports.detillocation = (input, category_name, location, callback) => {
+	let response        = 'OK';
+	let status_code     = 200;
+	let message         = 'Get maps data for ' + category_name + ' success.';
+	let result          = null;
+
+	async.waterfall([
+		(flowCallback) => {
+			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+		},
+		(categories, flowCallback) => {
+			let filters	= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+
+			let column	= categoriesMap[category_name];
+			let match	= { location };
+			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+
+			krisna.rawAggregate([
+				{ '$match': match },
+				{ '$group': { _id: '$location', output: { '$sum': 1 }, anggaran: { '$sum': '$alokasi' }, kementerian: {  '$addToSet': '$kementerian_nomen' }} },
+				{ '$project': { _id: 0, output: 1, anggaran: 1, kementerian: { '$size': '$kementerian' }} }
+			], {}, (err, result) => flowCallback(err, _.assign(result[0], { anggaran: 'Rp. ' + _.get(result, '[0].anggaran', 0).toString().replace( /(\d)(?=(\d{3})+$)/g, "$1." ) + ',00' })));
+		}
+	], (err, asyncResult) => {
+		if (err) {
+			response    = 'FAILED';
+			status_code = 400;
+			message     = err;
+		} else {
+			result      = asyncResult;
+		}
+		callback({ response, status_code, message, result });
+	});
+}
+
+module.exports.getOutput = (input, category_name, location, callback) => {
+	let response        = 'OK';
+	let status_code     = 200;
+	let message         = 'Get output data for ' + category_name + ' success.';
+	let result          = null;
+
+	const onepage		= 20;
+
+	let currentpage		= !_.isNil(input.page)	? _.toInteger(input.page)	: 0;
+	let sortby			= !_.isNil(input.sort)	? _.toInteger(input.sort)	: 'alokasi';
+
+	async.waterfall([
+		(flowCallback) => {
+			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+		},
+		(categories, flowCallback) => {
+			let filters		= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+
+			let column		= categoriesMap[category_name];
+			let match		= { location };
+			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+			let sort		= {};
+			sort[sortby]	= -1;
+
+			krisna.rawAggregate([
+				{ '$match': match },
+				{ '$sort': sort },
+				{ '$skip': (currentpage * onepage) },
+				{ '$limit': onepage },
+				{ '$project': { kegiatan: '$kegiatan_nomen', output: '$output_nomen', kl: '$kementerian_nomen', anggaran: '$alokasi' }},
+			], {}, (err, result) => flowCallback(err, { iteratee: (currentpage + 1), data: result }));
+		}
+	], (err, asyncResult) => {
+		if (err) {
+			response    = 'FAILED';
+			status_code = 400;
+			message     = err;
+		} else {
+			result      = asyncResult;
+		}
+		callback({ response, status_code, message, result });
+	});
+}
+
+module.exports.kementerian = (input, category_name, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get all categories success.';
 	let result          = null;
 
+	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+
 	async.waterfall([
 		(flowCallback) => {
+			if (filters) {
+				flowCallback(null, filters);
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+			}
+		},
+		(filt, flowCallback) => {
+			let column		= categoriesMap[category_name];
+			let match		= {};
+			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+
 			krisna.rawAggregate([
+				{ '$match': match },
 				{ '$group': { _id: { id: '$kementerian_kode', name: '$kementerian_nomen' }}},
 				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
 				{ '$sort': { name: 1 }}
@@ -149,15 +243,29 @@ module.exports.kementerian = (callback) => {
 	});
 }
 
-module.exports.location = (callback) => {
+module.exports.location = (input, category_name, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get all categories success.';
 	let result          = null;
 
+	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+
 	async.waterfall([
 		(flowCallback) => {
+			if (filters) {
+				flowCallback(null, filters);
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+			}
+		},
+		(filt, flowCallback) => {
+			let column		= categoriesMap[category_name];
+			let match		= {};
+			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+
 			krisna.rawAggregate([
+				{ '$match': match },
 				{ '$group': { _id: { id: '$location', name: '$provinsi_nomen' }}},
 				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
 				{ '$sort': { name: 1 }}

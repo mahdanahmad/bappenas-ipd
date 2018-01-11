@@ -13,13 +13,19 @@ router.get('/api/filters/:category_name/:location?', (req, res, next) => {
 	component.filters(req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
 });
 router.get('/api/maps/:category_name?', (req, res, next) => {
-	component.maps(req.params.category_name, (result) => { res.status(result.status_code).json(result); });
+	component.maps(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });
 });
-router.get('/api/kementerian', (req, res, next) => {
-	component.kementerian((result) => { res.status(result.status_code).json(result); });
+router.get('/api/detil/:category_name/:location?', (req, res, next) => {
+	component.detillocation(req.query, req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
 });
-router.get('/api/location', (req, res, next) => {
-	component.location((result) => { res.status(result.status_code).json(result); });
+router.get('/api/output/:category_name/:location?', (req, res, next) => {
+	component.getOutput(req.query, req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
+});
+router.get('/api/kementerian/:category_name', (req, res, next) => {
+	component.kementerian(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });
+});
+router.get('/api/location/:category_name', (req, res, next) => {
+	component.location(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });
 });
 
 module.exports = router;

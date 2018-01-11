@@ -1,17 +1,3 @@
-const map_dest		= '#content';
-const map_id		= 'categories-viz';
-
-const defMapColor	= '#5a6569';
-
-let mappedGeoProv	= {};
-let centered, path;
-
-const mapAddition	= [
-	{ kode: '100', nama: 'Pusat' },
-	{ kode: '101', nama: 'Perwakilan RI di Luar Negeri' },
-	{ kode: '102', nama: 'Asia Tenggara' },
-];
-
 function createMaps() {
 	d3.select(map_dest).selectAll("svg").remove();
 
@@ -39,10 +25,12 @@ function createMaps() {
 		.attr('id', 'background')
 		.attr('width', width)
 		.attr('height', height)
-		// .on('click', () => { zoomProv(null, monitor_id) });
+		// .attr('transform', 'translate(-' + (width / 8) + ',-' + (height / 8) +  ')')
+		.on('click', () => { zoomProv(null) });
 
 	let addition	= svg.append('g').attr('id', 'addition-wrapper').selectAll('.addition')
 		.data(mapAddition).enter().append('g')
+			.attr('id', (o) => (o.kode))
 			.attr('class', 'addition cursor-pointer')
 			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 16) * (i + 1)) + (height / 4) * (i + 0.5)) + ')'));
 
@@ -50,13 +38,14 @@ function createMaps() {
 		.attr('id', (o) => ('prov-' + o.kode))
 		.attr('class', 'province')
 	    .attr("r", (height / 8))
-	    // .attr("stroke","black")
 	    .attr("fill", defMapColor);
 
 	addition.append('text')
 		.attr('text-anchor', 'middle')
 		.text((o) => (o.nama))
 		.call(wrap, (height / 8));
+
+	addition.on('click', (o) => { zoomProv(o.kode); });
 
 	d3.json('json/indonesia.json', (err, raw) => {
 		if (err) return console.error(err);
@@ -71,10 +60,7 @@ function createMaps() {
 					.attr("class", (o) => ("province cursor-pointer"))
 					.attr("d", path)
 					.attr('vector-effect', 'non-scaling-stroke')
-					.style("fill", defMapColor);
+					.style("fill", defMapColor)
+					.on('click', (o) => zoomProv(o.properties.id_provinsi));
 	});
-}
-
-function colorMap(data) {
-	data.forEach((o) => { d3.select('#prov-' + o._id).style('fill', o.color); });
 }

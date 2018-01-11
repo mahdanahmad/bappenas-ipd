@@ -1,10 +1,7 @@
-let cate_dest	= '#categories-content';
-let cate_id		= 'categories-viz';
-
-const shown		= 9;
-const textMarg	= 10;
 let space		= 0;
 let maxWidth	= 0;
+
+let timeout;
 
 function createCategoriesBar(data) {
 	d3.select(cate_dest).selectAll("svg").remove();
@@ -59,7 +56,7 @@ function createCategoriesBar(data) {
 		.attr('text-anchor', 'middle')
   		.attr('y', (height - textMarg))
   		.attr('x', (o) => (x(o.color) + (x.bandwidth() / 2)))
-  		.text((o) => (nFormatter(o.anggaran)));
+  		.text(0);
 
 	groupBar.append('foreignObject')
 		.attr('class', 'node')
@@ -79,23 +76,20 @@ function createCategoriesBar(data) {
 		.attr('height', height)
 		.on('click', (o) => categorySelect(o));
 
-	changeCateHeight(formData(data));
+	changeCateHeight(formData(data, height, y));
 
 	svg.append('g')
 		.attr('id', 'grid-wrapper')
 		.selectAll('grid')
-		.data(_.times(data.length - 1, (o) => ( (o + 1) * x.bandwidth() )))
+		.data(_.map(data, (o) => ( x(o.color) )))
 			.enter().append('line')
+			.attr('class', (o, i) => (i == 0 ? 'hidden' : ''))
 			.attr('x1', (o) => (o))
 			.attr('x2', (o) => (o))
 			.attr('y1', 0)
 			.attr('y2', height);
 
 	$( '.arrows' ).click(moveCategories);
-
-	function formData(val) {
-		return _.chain(val).keyBy('color').mapValues((o) => ({ fill: (height / 2) + y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran) })).value();
-	}
 }
 
 function moveCategories() {
@@ -130,10 +124,26 @@ function changeCateHeight(data) {
         .attr('y', (o) => (data[o.color].cream));
 
 	canvas.selectAll('.detil-idr').transition(transition)
-		.attr('y', (o) => (data[o.color].cream - textMarg))
+		.text((o) => (data[o.color].text))
+		.attr('y', (o) => (data[o.color].cream - textMarg));
 }
 
 function categorySelect(data) {
 	$( '.group-bar' + data.color ).toggleClass('unintended');
 
+	clearTimeout(timeout);
+
+	timeout	= setTimeout(() => {
+		let activeFilter	= $(' .group-bar:not(.unintended) > foreignObject > div ').map(function () {
+			let currText	= $( this ).text();
+			return currText.substring(currText.indexOf('. ') + 2);
+		}).get();
+
+		$.get('/api/maps/' + category, { filters: JSON.stringify(activeFilter) }, (data) => { colorMap(data.result); });
+
+	}, awaitTime);
+}
+
+function formData(val, height, y) {
+	return _.chain(val).keyBy('color').mapValues((o) => ({ fill: (height / 2) + y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) })).value();
 }

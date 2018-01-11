@@ -130,16 +130,18 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 	let message         = 'Get maps data for ' + category_name + ' success.';
 	let result          = null;
 
+	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filters	= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let filt	= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
 
 			let column	= categoriesMap[category_name];
 			let match	= { location };
-			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -167,19 +169,20 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 
 	const onepage		= 20;
 
-	let currentpage		= !_.isNil(input.page)	? _.toInteger(input.page)	: 0;
-	let sortby			= !_.isNil(input.sort)	? _.toInteger(input.sort)	: 'alokasi';
+	let currentpage		= !_.isNil(input.page)		? _.toInteger(input.page)		: 0;
+	let sortby			= !_.isNil(input.sort)		? _.toInteger(input.sort)		: 'alokasi';
+	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filters		= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let filt		= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
 
 			let column		= categoriesMap[category_name];
 			let match		= { location };
-			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			let sort		= {};
 			sort[sortby]	= -1;
 

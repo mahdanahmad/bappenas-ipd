@@ -31,21 +31,23 @@
 		#categories-head {
 			line-height: $head-height; background: $red-color; width: 100%; position: relative;
 			span { margin-left: $arrow-width; letter-spacing: 2px; }
-			#categories-hamburger {
-				z-index: 100; width: 1.75%; height: $head-height * 2 / 4; position: absolute; margin: #{$head-height / 4} 0; @include transform(rotate(0deg)); @include transition(.5s ease-in-out); top: 0px; right: 1%;
-				span {
-					display: block; @include transform(rotate(0deg)); @include transition(.25s ease-in-out);
-					position: absolute; height: calc(100% / 6); width: 100%; background: white; border-radius: 9px; opacity: 1; left: 0;
-					&:nth-child(1) { top: 0px; }
-					&:nth-child(2) { top: calc(100% / 6 * 2.5); }
-					&:nth-child(3) { top: calc(100% / 6 * 5); }
-				}
-				&.x-sign {
-					span:nth-child(1) { top: calc(100% / 6 * 2.5); @include transform(rotate(135deg)); }
-					span:nth-child(2) { opacity: 0; left: -100%; }
-					span:nth-child(3) { top: calc(100% / 6 * 2.5); @include transform(rotate(-135deg)); }
-				}
-			}
+			i { position: absolute; font-size: 20px; right: 10px; top: 4px; }
+			i.fa-times { z-index: 100; }
+			// #categories-hamburger {
+			// 	z-index: 100; width: 1.75%; height: $head-height * 2 / 4; position: absolute; margin: #{$head-height / 4} 0; @include transform(rotate(0deg)); @include transition(.5s ease-in-out); top: 0px; right: 1%;
+			// 	span {
+			// 		display: block; @include transform(rotate(0deg)); @include transition(.25s ease-in-out);
+			// 		position: absolute; height: calc(100% / 6); width: 100%; background: white; border-radius: 9px; opacity: 1; left: 0;
+			// 		&:nth-child(1) { top: 0px; }
+			// 		&:nth-child(2) { top: calc(100% / 6 * 2.5); }
+			// 		&:nth-child(3) { top: calc(100% / 6 * 5); }
+			// 	}
+			// 	&.x-sign {
+			// 		span:nth-child(1) { top: calc(100% / 6 * 2.5); @include transform(rotate(135deg)); }
+			// 		span:nth-child(2) { opacity: 0; left: -100%; }
+			// 		span:nth-child(3) { top: calc(100% / 6 * 2.5); @include transform(rotate(-135deg)); }
+			// 	}
+			// }
 		}
 		.arrows {
 			height: calc(100% - #{$head-height}); line-height: #{$header-height - $head-height}; width: $arrow-width; text-align: center; background: rgba($default-back, .75);

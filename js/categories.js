@@ -134,7 +134,7 @@ function categorySelect(data) {
 	clearTimeout(timeout);
 
 	timeout	= setTimeout(() => {
-		let activeFilter	= $(' .group-bar:not(.unintended) > foreignObject > div ').map(function () {
+		activeFilter	= $(' .group-bar:not(.unintended) > foreignObject > div ').map(function () {
 			let currText	= $( this ).text();
 			return currText.substring(currText.indexOf('. ') + 2);
 		}).get();

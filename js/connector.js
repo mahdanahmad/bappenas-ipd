@@ -32,7 +32,10 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('.province#prov-' + prov_id).classed('unintended', false);
 			d3.selectAll('.province:not(#prov-' + prov_id + ')').classed('unintended', true);
 
-			$.get('/api/detil/' + category + '/' + prov_id, (data) => {
+			let detilParams	= {};
+			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
+
+			$.get('/api/detil/' + category + '/' + prov_id, detilParams, (data) => {
 				$( '#prov-name' ).text($( '#drop-prov-' + prov_id ).text())
 				_.forEach(data.result, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
 
@@ -76,7 +79,10 @@ function constructAdditionTable(data) {
 }
 
 function appendAdditionTable() {
-	$.get('/api/output/' + category + '/' + centered, { page }, (data) => {
+	let params	= { page };
+	if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
+
+	$.get('/api/output/' + category + '/' + centered, params, (data) => {
 		page	= data.result.iteratee;
 		$('#detil-wrapper > table > tbody').append(constructAdditionTable(data.result.data));
 	});

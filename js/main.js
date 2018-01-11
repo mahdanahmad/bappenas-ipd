@@ -7,13 +7,22 @@ $( document ).ready(() => {
 
 	changeCategory('Nawacita');
 
-	$( '#categories-hamburger' ).click(function() {
-		if ($( this ).hasClass('x-sign')) {
+	// $( '#categories-hamburger' ).click(function() {
+	// 	if ($( this ).hasClass('x-sign')) {
+	// 		$( '#selection' ).slideUp();
+	// 	} else {
+	// 		$( '#selection' ).slideDown();
+	// 	}
+	// 	$( this ).toggleClass('x-sign');
+	// });
+
+	$( '#categories-head > i' ).click(function() {
+		if ($( this ).hasClass('fa-times')) {
 			$( '#selection' ).slideUp();
-		} else {
+		} else if ($( this ).hasClass('fa-home')) {
 			$( '#selection' ).slideDown();
 		}
-		$( this ).toggleClass('x-sign');
+		$( '#categories-head > i' ).toggleClass('hidden');
 	});
 
 	$('#detil-wrapper > table > tbody').endlessScroll({
@@ -24,10 +33,13 @@ $( document ).ready(() => {
 			appendAdditionTable();
 		}
 	});
+
+	$( '#backtomap' ).click(() => { zoomProv(null); });
 });
 
 function changeCategory(val) {
-	category	= val;
+	category		= val;
+	activeFilter	= null
 	$( '#selection' ).slideUp(() => {
 		$( '#categories-hamburger' ).removeClass('hidden');
 	});

@@ -17,4 +17,5 @@ const textMarg		= 10;
 
 let page			= 0;
 
-let awaitTime		= 1500;
+let awaitTime		= 1000;
+let activeFilter	= null;

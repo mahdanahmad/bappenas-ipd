@@ -135,7 +135,8 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 	let message         = 'Get maps data for ' + category_name + ' success.';
 	let result          = null;
 
-	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
+	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -147,7 +148,8 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 			let column	= categoriesMap[category_name];
 			let match	= { location };
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
-
+			if (kementerian) { match.kementerian_kode = kementerian; }
+			
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$group': { _id: '$location', output: { '$sum': 1 }, anggaran: { '$sum': '$alokasi' }, kementerian: {  '$addToSet': '$kementerian_nomen' }} },
@@ -192,7 +194,7 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 			let sort		= {};
 			sort[sortby]	= -1;
 			if (kementerian) { match.kementerian_kode = kementerian; }
-			
+
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$sort': sort },

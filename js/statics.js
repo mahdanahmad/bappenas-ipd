@@ -17,7 +17,7 @@ const textMarg		= 10;
 
 let page			= 0;
 
-let awaitTime		= 1000;
+let awaitTime		= 800;
 let activeFilter	= null;
 
 let kementerian		= null;

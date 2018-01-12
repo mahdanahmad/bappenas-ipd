@@ -47,6 +47,7 @@
 				}
 				tbody {
 					height: calc(100% - 40px); overflow-y: auto; overflow-x: hidden;
+					tr:nth-child(odd) { background: rgba(black, .2); }
 				}
 			}
 		}

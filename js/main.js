@@ -1,7 +1,7 @@
 let category	= '';
 
 $( document ).ready(() => {
-	$.get('/api/categories', (data) => { $( '#categories-wrapper' ).html( data.result.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
+	getCategories((data) => { $( '#categories-wrapper' ).html( data.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
 
 	createMaps();
 
@@ -34,6 +34,10 @@ $( document ).ready(() => {
 		}
 	});
 
+	$( '#detil-content > #detil-header > #search-wrapper > input' ).keyup(() => {
+		console.log('keyup');
+	});
+
 	$( '#backtomap' ).click(() => { zoomProv(null); });
 });
 
@@ -49,13 +53,13 @@ function changeCategory(val) {
 	$( '#categories-head > span' ).html(val);
 	$( '#categories-hamburger' ).removeClass('x-sign');
 
-	$.get('/api/filters/' + val, (data) => { createCategoriesBar(data.result); });
-	$.get('/api/maps/' + val, (data) => { colorMap(data.result); });
+	getFilters(val, null, {}, (data) => { createCategoriesBar(data); });
+	getMaps(val, {}, (data) => { colorMap(data); })
 
-	$.get('/api/location/' + val, (data) => {
+	getLocation(val, {}, (data) => {
 		$( '#dropdown-location > ul' ).html( constructDropdown(data, 'prov') );
 	});
-	$.get('/api/kementerian/' + val, (data) => {
+	getKementerian(val, {}, (data) => {
 		$( '#dropdown-kementerian > ul' ).html( constructDropdown(data, 'kl') );
 	});
 
@@ -69,16 +73,16 @@ function changeDrop(state, id, name) {
 	if (state == 'kementerian') {
 		kementerian	= id;
 
-		$.get('/api/filters/' + category + (centered ? ('/' + centered) : ''), _.omitBy({ kementerian: id }, _.isNil), (data) => {
+		getFilters(category, centered, _.omitBy({ kementerian: id }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-			changeCateHeight(formData(data.result, height, y));
+			changeCateHeight(formData(data, height, y));
 		});
 
 		let params	= _.omitBy({ kementerian: id }, _.isNil);
 		if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
-		$.get('/api/maps/' + category, params, (data) => { colorMap(data.result); });
+		getMaps(category, params, (data) => { colorMap(data); });
 
 		zoomProv(null);
 	}
@@ -86,6 +90,6 @@ function changeDrop(state, id, name) {
 }
 
 function constructDropdown(data, state) {
-	return $( '#drop-' + state + '-default' )[0].outerHTML + data.result.map((o) => ("<li id='drop-" + state + "-" + o.id + "' class='uppercase cursor-pointer' onclick='changeDrop(\"" + (state == 'prov' ? 'location' : 'kementerian') + "\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('');
+	return $( '#drop-' + state + '-default' )[0].outerHTML + data.map((o) => ("<li id='drop-" + state + "-" + o.id + "' class='uppercase cursor-pointer' onclick='changeDrop(\"" + (state == 'prov' ? 'location' : 'kementerian') + "\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('');
 
 }

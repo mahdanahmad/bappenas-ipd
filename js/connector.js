@@ -33,12 +33,12 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('.province#prov-' + prov_id).classed('unintended', false);
 			d3.selectAll('.province:not(#prov-' + prov_id + ')').classed('unintended', true);
 
-			let detilParams	= {};
+			let detilParams	= _.omitBy({ kementerian }, _.isNil);
 			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
 
-			$.get('/api/detil/' + category + '/' + prov_id, detilParams, (data) => {
+			getDetil(category, prov_id, detilParams, (data) => {
 				$( '#prov-name' ).text($( '#drop-prov-' + prov_id ).text())
-				_.forEach(data.result, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
+				_.forEach(data, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
 
 				d3.select('#prov-overview').classed('hidden', false);
 			});
@@ -54,11 +54,11 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('#prov-overview').classed('hidden', true);
 		}
 
-		$.get('/api/filters/' + category + (centered ? ('/' + centered) : ''), _.omitBy({ kementerian }, _.isNil), (data) => {
+		getFilters(category, centered, _.omitBy({ kementerian }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-			changeCateHeight(formData(data.result, height, y));
+			changeCateHeight(formData(data, height, y));
 		});
 
 		d3.select('div#content-wrapper').classed('shrink', centered);
@@ -83,9 +83,9 @@ function appendAdditionTable() {
 	let params	= _.omitBy({ page, kementerian }, _.isNil);
 	if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
 
-	$.get('/api/output/' + category + '/' + centered, params, (data) => {
-		page	= data.result.iteratee;
-		$('#detil-wrapper > table > tbody').append(constructAdditionTable(data.result.data));
+	getOutput(category, centered, params, (data) => {
+		page	= data.iteratee;
+		$('#detil-wrapper > table > tbody').append(constructAdditionTable(data.data));
 	});
 }
 

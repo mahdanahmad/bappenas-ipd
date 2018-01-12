@@ -30,15 +30,15 @@ function createMaps() {
 
 	let addition	= svg.append('g').attr('id', 'addition-wrapper').selectAll('.addition')
 		.data(mapAddition).enter().append('g')
-			.attr('id', (o) => (o.kode))
-			.attr('class', 'addition cursor-pointer')
+			.attr('id', (o) => ('prov-wrapper-' + o.kode))
+			.attr('class', 'addition')
 			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 16) * (i + 1)) + (height / 4) * (i + 0.5)) + ')'));
 
 	addition.append("circle")
 		.attr('id', (o) => ('prov-' + o.kode))
 		.attr('class', 'province')
 	    .attr("r", (height / 8))
-	    .attr("fill", defMapColor);
+	    .attr("fill", defaultColor);
 
 	addition.append('text')
 		.attr('text-anchor', 'middle')
@@ -57,10 +57,10 @@ function createMaps() {
 			.data(states.features)
 				.enter().append("path")
 					.attr("id", (o) => ('prov-' + (o.properties.id_provinsi)))
-					.attr("class", (o) => ("province cursor-pointer"))
+					.attr("class", (o) => ("province"))
 					.attr("d", path)
 					.attr('vector-effect', 'non-scaling-stroke')
-					.style("fill", defMapColor)
+					.style("fill", defaultColor)
 					.on('click', (o) => zoomProv(o.properties.id_provinsi));
 	});
 }

@@ -1,6 +1,6 @@
 const map_dest		= '#content';
 const map_id		= 'maps-viz';
-const defMapColor	= '#5a6569';
+const defaultColor	= '#5a6569';
 const mapAddition	= [
 	{ kode: '100', nama: 'Pusat' },
 	{ kode: '101', nama: 'Perwakilan RI di Luar Negeri' },

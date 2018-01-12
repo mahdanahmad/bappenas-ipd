@@ -1,10 +1,11 @@
 function zoomProv(prov_id, isMoronic) {
-	prov_id			= "" + prov_id;
+	if (prov_id) { prov_id = "" + prov_id; }
 
 	let svg			= d3.select("svg#" + map_id + " > g");
 	let isNotProv	= _.chain(mapAddition).map('kode').includes(prov_id).value();
 
-	if (path && svg.node()) {
+	let addition_kode	= _.map(mapAddition, 'kode');
+	if (path && svg.node() && ($( '#prov-' + (_.includes(addition_kode, prov_id) ? 'wrapper-' : '') + prov_id ).hasClass('cursor-pointer') || _.isNil(prov_id))) {
 		let x, y, k;
 		let node		= svg.node().getBBox();
 		let duration	= 750;
@@ -19,7 +20,7 @@ function zoomProv(prov_id, isMoronic) {
 				centroid = path.centroid(mappedGeoProv[prov_id]);
 				k = 2;
 			} else {
-				centroid = $( '.addition#' + prov_id ).attr('transform').replace('translate(', '').replace(')', '').split(',').map((o, i) => (parseFloat(o) - ((i * -1) * node.height / 32)));
+				centroid = $( '#prov-wrapper-' + prov_id ).attr('transform').replace('translate(', '').replace(')', '').split(',').map((o, i) => (parseFloat(o) - ((i * -1) * node.height / 32)));
 				k = 1.25;
 			}
 
@@ -89,5 +90,10 @@ function appendAdditionTable() {
 }
 
 function colorMap(data) {
-	data.forEach((o) => { d3.select('#prov-' + o._id).style('fill', o.color); });
+	let addition_kode	= _.map(mapAddition, 'kode');
+	$( '#addition-wrapper .addition, .province' ).removeClass('cursor-pointer cursor-not-allowed');
+	data.forEach((o) => {
+		d3.select('#prov-' + o._id).style('fill', o.color);
+		$( '#prov-' + (_.includes(addition_kode, o._id) ? 'wrapper-' : '') + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
+	});
 }

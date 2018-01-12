@@ -35,7 +35,7 @@ function createCategoriesBar(data) {
 
 	groupBar.append("rect")
 		  .attr("class", "bar fill")
-		  .attr("fill", (o) => (o.color || '#5a6569'))
+		  .attr("fill", (o) => (o.color || defaultColor))
 		  .attr("x", (o) => (x(o.color)))
 		  .attr("y", height)
 		  // .attr("y", (o) => ((height / 2) + y(o.anggaran)))
@@ -45,7 +45,7 @@ function createCategoriesBar(data) {
 
 	groupBar.append("rect")
 		  .attr("class", "bar cream")
-		  .attr("fill", (o) => (o.color || '#5a6569'))
+		  .attr("fill", (o) => (o.color || defaultColor))
 		  .attr("x", (o) => (x(o.color)))
 		  .attr("y", (height - 2))
 		  .attr("width", x.bandwidth())

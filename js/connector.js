@@ -53,7 +53,7 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('#prov-overview').classed('hidden', true);
 		}
 
-		$.get('/api/filters/' + category + (centered ? ('/' + centered) : ''), (data) => {
+		$.get('/api/filters/' + category + (centered ? ('/' + centered) : ''), _.omitBy({ kementerian }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
@@ -79,7 +79,7 @@ function constructAdditionTable(data) {
 }
 
 function appendAdditionTable() {
-	let params	= { page };
+	let params	= _.omitBy({ page, kementerian }, _.isNil);
 	if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
 
 	$.get('/api/output/' + category + '/' + centered, params, (data) => {

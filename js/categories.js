@@ -139,7 +139,7 @@ function categorySelect(data) {
 			return currText.substring(currText.indexOf('. ') + 2);
 		}).get();
 
-		$.get('/api/maps/' + category, { filters: JSON.stringify(activeFilter) }, (data) => { colorMap(data.result); });
+		$.get('/api/maps/' + category, _.omitBy({ filters: JSON.stringify(activeFilter), kementerian }, _.isNil), (data) => { colorMap(data.result); });
 
 	}, awaitTime);
 }

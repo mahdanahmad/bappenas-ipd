@@ -34,24 +34,27 @@ module.exports.categories = (callback) => {
 	});
 }
 
-module.exports.filters = (category_name, location, callback) => {
+module.exports.filters = (input, category_name, location, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get all filters for ' + category_name + ' success.';
 	let result          = null;
+
+	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian	: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filters	= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let filters		= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
 			let colors	= _.get(categories, 'colors', {});
 
 			let column	= categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
 			if (location) { match.location = location; }
+			if (kementerian) { match.kementerian_kode = kementerian; }
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -81,7 +84,8 @@ module.exports.maps = (input, category_name, callback) => {
 	let message         = 'Get maps data for ' + category_name + ' success.';
 	let result          = null;
 
-	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
+	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -97,6 +101,7 @@ module.exports.maps = (input, category_name, callback) => {
 			let column	= categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			if (kementerian) { match.kementerian_kode = kementerian; }
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -130,7 +135,7 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 	let message         = 'Get maps data for ' + category_name + ' success.';
 	let result          = null;
 
-	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -169,9 +174,10 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 
 	const onepage		= 20;
 
-	let currentpage		= !_.isNil(input.page)		? _.toInteger(input.page)		: 0;
-	let sortby			= !_.isNil(input.sort)		? _.toInteger(input.sort)		: 'alokasi';
-	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	let currentpage		= !_.isNil(input.page)			? _.toInteger(input.page)		: 0;
+	let sortby			= !_.isNil(input.sort)			? _.toInteger(input.sort)		: 'alokasi';
+	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
+	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -185,7 +191,8 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			let sort		= {};
 			sort[sortby]	= -1;
-
+			if (kementerian) { match.kementerian_kode = kementerian; }
+			
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$sort': sort },
@@ -212,7 +219,7 @@ module.exports.kementerian = (input, category_name, callback) => {
 	let message         = 'Get all categories success.';
 	let result          = null;
 
-	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 
 	async.waterfall([
 		(flowCallback) => {
@@ -252,7 +259,7 @@ module.exports.location = (input, category_name, callback) => {
 	let message         = 'Get all categories success.';
 	let result          = null;
 
-	let filters			= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 
 	async.waterfall([
 		(flowCallback) => {

@@ -5,7 +5,7 @@ $( document ).ready(() => {
 
 	createMaps();
 
-	// changeCategory('Nawacita');
+	changeCategory('Nawacita');
 
 	// $( '#categories-hamburger' ).click(function() {
 	// 	if ($( this ).hasClass('x-sign')) {
@@ -39,7 +39,9 @@ $( document ).ready(() => {
 
 function changeCategory(val) {
 	category		= val;
-	activeFilter	= null
+	activeFilter	= null;
+	kementerian		= null;
+
 	$( '#selection' ).slideUp(() => {
 		$( '#categories-hamburger' ).removeClass('hidden');
 	});
@@ -64,6 +66,22 @@ function changeDrop(state, id, name) {
 	$( '#filters-' + state + ' .filters-value').html(name);
 
 	if (state == 'location') { zoomProv(id, true); }
+	if (state == 'kementerian') {
+		kementerian	= id;
+
+		$.get('/api/filters/' + category + (centered ? ('/' + centered) : ''), _.omitBy({ kementerian: id }, _.isNil), (data) => {
+			let height	= $(cate_dest).outerHeight(true);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+
+			changeCateHeight(formData(data.result, height, y));
+		});
+
+		let params	= _.omitBy({ kementerian: id }, _.isNil);
+		if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
+		$.get('/api/maps/' + category, params, (data) => { colorMap(data.result); });
+
+		zoomProv(null);
+	}
 
 }
 

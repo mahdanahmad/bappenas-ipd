@@ -10,7 +10,7 @@ router.get('/api/categories', (req, res, next) => {
 	component.categories((result) => { res.status(result.status_code).json(result); });
 });
 router.get('/api/filters/:category_name/:location?', (req, res, next) => {
-	component.filters(req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
+	component.filters(req.query, req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
 });
 router.get('/api/maps/:category_name?', (req, res, next) => {
 	component.maps(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });

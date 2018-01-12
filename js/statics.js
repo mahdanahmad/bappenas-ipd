@@ -20,4 +20,5 @@ let page			= 0;
 let awaitTime		= 800;
 let activeFilter	= null;
 
+let category		= '';
 let kementerian		= null;

@@ -1,7 +1,7 @@
 let space		= 0;
 let maxWidth	= 0;
 
-let timeout;
+let categoryTimeout;
 
 function createCategoriesBar(data) {
 	d3.select(cate_dest).selectAll("svg").remove();
@@ -131,9 +131,9 @@ function changeCateHeight(data) {
 function categorySelect(data) {
 	$( '.group-bar' + data.color ).toggleClass('unintended');
 
-	clearTimeout(timeout);
+	clearTimeout(categoryTimeout);
 
-	timeout	= setTimeout(() => {
+	categoryTimeout	= setTimeout(() => {
 		activeFilter	= $(' .group-bar:not(.unintended) > foreignObject > div ').map(function () {
 			let currText	= $( this ).text();
 			return currText.substring(currText.indexOf('. ') + 2);

@@ -15,7 +15,7 @@ function getDetil(category, location, params, callback) {
 }
 
 function getOutput(category, location, params, callback) {
-	$.get('/api/output/' + category + '/' + location, (data) => (callback(data.result)));
+	$.get('/api/output/' + category + '/' + location, params, (data) => (callback(data.result)));
 }
 
 function getKementerian(category, params, callback) {

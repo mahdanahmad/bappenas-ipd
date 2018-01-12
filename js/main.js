@@ -1,4 +1,4 @@
-let category	= '';
+let typeTimeout;
 
 $( document ).ready(() => {
 	getCategories((data) => { $( '#categories-wrapper' ).html( data.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
@@ -25,17 +25,26 @@ $( document ).ready(() => {
 		$( '#categories-head > i' ).toggleClass('hidden');
 	});
 
-	$('#detil-wrapper > table > tbody').endlessScroll({
-		fireOnce: false,
-		fireDelay: false,
-		loader: '<div id="loader"><li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li><div>',
-		callback: (p) => {
-			appendAdditionTable();
-		}
-	});
+	// $('#detil-wrapper > table > tbody').endlessScroll({
+	// 	inflowPixels: 200,
+	// 	fireOnce: false,
+	// 	fireDelay: false,
+	// 	loader: '<div id="loader"><li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li><div>',
+	// 	// ceaseFireOnEmpty: false,
+	// 	resetCounter: () => (page == 0),
+	// 	callback: (p) => {
+	// 		appendAdditionTable();
+	// 	}
+	// });
 
 	$( '#detil-content > #detil-header > #search-wrapper > input' ).keyup(() => {
-		console.log('keyup');
+		clearTimeout(typeTimeout);
+
+		typeTimeout	= setTimeout(() => {
+			$('#detil-wrapper > table > tbody').html(' ');
+			page	= 0;
+			appendAdditionTable();
+		}, awaitTime);
 	});
 
 	$( '#backtomap' ).click(() => { zoomProv(null); });
@@ -75,7 +84,7 @@ function changeDrop(state, id, name) {
 
 		getFilters(category, centered, _.omitBy({ kementerian: id }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
-			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
 			changeCateHeight(formData(data, height, y));
 		});

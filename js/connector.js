@@ -10,6 +10,7 @@ function zoomProv(prov_id, isMoronic) {
 		let node		= svg.node().getBBox();
 		let duration	= 750;
 
+		$( '#detil-content > #detil-header > #search-wrapper > input' ).val('');
 		// Compute centroid of the selected path
 		if ((mappedGeoProv[prov_id] || isNotProv) && (centered !== prov_id || isMoronic)) {
 			$('#detil-wrapper > table > tbody').html(' ');
@@ -56,7 +57,7 @@ function zoomProv(prov_id, isMoronic) {
 
 		getFilters(category, centered, _.omitBy({ kementerian }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
-			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.result).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
 			changeCateHeight(formData(data, height, y));
 		});
@@ -82,6 +83,8 @@ function constructAdditionTable(data) {
 function appendAdditionTable() {
 	let params	= _.omitBy({ page, kementerian }, _.isNil);
 	if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
+	let search	= $( '#detil-content > #detil-header > #search-wrapper > input' ).val();
+	if (search !== '') { params.like = search; }
 
 	getOutput(category, centered, params, (data) => {
 		page	= data.iteratee;

@@ -149,7 +149,7 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 			let match	= { location };
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			if (kementerian) { match.kementerian_kode = kementerian; }
-			
+
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$group': { _id: '$location', output: { '$sum': 1 }, anggaran: { '$sum': '$alokasi' }, kementerian: {  '$addToSet': '$kementerian_nomen' }} },
@@ -178,6 +178,8 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 
 	let currentpage		= !_.isNil(input.page)			? _.toInteger(input.page)		: 0;
 	let sortby			= !_.isNil(input.sort)			? _.toInteger(input.sort)		: 'alokasi';
+
+	const like			= !_.isNil(input.like)			? input.like					: null;
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 
@@ -194,6 +196,7 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 			let sort		= {};
 			sort[sortby]	= -1;
 			if (kementerian) { match.kementerian_kode = kementerian; }
+			if (like) { match.output_nomen = new RegExp(like, 'i') }
 
 			krisna.rawAggregate([
 				{ '$match': match },

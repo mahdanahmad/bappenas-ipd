@@ -5,7 +5,7 @@ $( document ).ready(() => {
 
 	createMaps();
 
-	changeCategory('Nawacita');
+	// changeCategory('Nawacita');
 
 	// $( '#categories-hamburger' ).click(function() {
 	// 	if ($( this ).hasClass('x-sign')) {

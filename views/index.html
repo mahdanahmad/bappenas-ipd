@@ -41,6 +41,7 @@
 		<script src="fetcher.js"></script>
 		<script src="connector.js"></script>
 
+		<script src="progress.js"></script>
 		<script src="categories.js"></script>
 		<script src="map.js"></script>
 		<script src="main.js"></script>
@@ -78,7 +79,8 @@
 					</div>
 					<div id="categories-selection">
 						<div id="categories-head">
-							<span class="uppercase cursor-default"></span>
+							<span id="categories-title" class="uppercase cursor-default"></span> / <span id="categories-location" class="uppercase cursor-default">National</span>.
+							Total Anggaran: <span id="categories-anggaran"></span>
 							<!-- <div id="categories-hamburger" class="x-sign cursor-pointer hidden"><span></span><span></span><span></span></div> -->
 							<i class="fa fa-home cursor-pointer" aria-hidden="true"></i>
 							<i class="fa fa-times cursor-pointer hidden" aria-hidden="true"></i>
@@ -99,14 +101,14 @@
 				<div id="detil-content">
 					<div id="detil-header">
 						<div id="backtomap" class="float-left cursor-pointer">
-							<i class="fa fa-caret-left" aria-hidden="true"></i> Kembali ke peta
+							<i class="fa fa-caret-left" aria-hidden="true"></i> Kembali ke <span>peta</span>
 						</div>
 						<div id="search-wrapper" class="float-right">
 							<label for="detil-search"><i class="fa fa-search" aria-hidden="true"></i></label>
 							<input id="detil-search" type="text" value="" placeholder="Cari output">
 						</div>
 					</div>
-					<div id="detil-wrapper">
+					<div id="detil-wrapper" class="forced-height">
 						<table>
 							<thead>
 								<tr class="cursor-default">
@@ -120,6 +122,23 @@
 
 							</tbody>
 						</table>
+					</div>
+					<div id="progress-wrapper">
+						<svg></svg>
+						<div id="difference-wrapper" class="cursor-default">
+							<div id="diff-anggaran">
+								<label>Anggaran</label>
+								<span>Rp. 80 Milyar</span>
+							</div>
+							<div id="diff-realisasi">
+								<label>Realisasi</label>
+								<span>Rp. 80 Milyar</span>
+							</div>
+							<div id="diff-selisih">
+								<label>Selisih</label>
+								<span>+Rp. 80 Milyar</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

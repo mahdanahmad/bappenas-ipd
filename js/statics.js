@@ -13,7 +13,7 @@ const cate_dest		= '#categories-content';
 const cate_id		= 'categories-viz';
 
 const shown			= 9;
-const textMarg		= 10;
+const textMarg		= 5;
 
 let page			= 0;
 
@@ -22,3 +22,5 @@ let activeFilter	= null;
 
 let category		= '';
 let kementerian		= null;
+
+let backState		= 'peta';

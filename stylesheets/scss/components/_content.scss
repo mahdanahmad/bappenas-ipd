@@ -26,9 +26,9 @@
 			#backtomap { padding: 0px 15px; border: 1px solid; border-radius: 3px; line-height: 25px; }
 		}
 		#detil-wrapper {
-			width: 100%; height: calc(100% - 27px - 10px); margin-top: 10px;
+			width: 100%; margin-top: 10px;
 			table {
-				height: 100%; width: 100%; border-collapse: collapse;
+				width: 100%; border-collapse: collapse;
 				thead, tbody {
 					display: block; width: 100%; @include clearfix();
 					tr {
@@ -46,8 +46,27 @@
 					text-align: left; border-color: white; border-top: 1px solid; border-bottom: 1px solid; text-transform: uppercase;
 				}
 				tbody {
-					height: calc(100% - 40px); overflow-y: auto; overflow-x: hidden;
+					overflow-y: auto; overflow-x: hidden;
 					tr:nth-child(odd) { background: rgba(black, .2); }
+					tr.selected { background: none; }
+				}
+			}
+			&.forced-height {
+				height: calc(100% - 27px - 10px);
+				table {
+					height: 100%;
+					tbody { height: calc(100% - 40px); }
+				}
+			}
+		}
+		#progress-wrapper {
+			width: 100%;
+			#difference-wrapper {
+				width: 100%;
+				& > div {
+					width: calc(94% / 3); display: inline-block; float: left; padding: 1%;
+					label { display: block; text-transform: uppercase; color: lightgrey; font-size: 8px; }
+					span { font-size: 11px; }
 				}
 			}
 		}

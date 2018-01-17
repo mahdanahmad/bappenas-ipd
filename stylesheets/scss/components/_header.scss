@@ -29,8 +29,8 @@
 		$head-height	: 4vh;
 		$arrow-width	: 2.5%;
 		#categories-head {
-			line-height: $head-height; background: $red-color; width: 100%; position: relative;
-			span { margin-left: $arrow-width; letter-spacing: 2px; }
+			line-height: $head-height; background: $red-color; width: 100%; position: relative; letter-spacing: 2px;  
+			span#categories-title { margin-left: $arrow-width; }
 			i { position: absolute; font-size: 20px; right: 10px; top: 4px; }
 			i.fa-times { z-index: 100; }
 			// #categories-hamburger {

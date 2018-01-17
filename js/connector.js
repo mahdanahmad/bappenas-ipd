@@ -1,5 +1,6 @@
 function zoomProv(prov_id, isMoronic) {
 	if (prov_id) { prov_id = "" + prov_id; }
+	let provName	= $( '#drop-prov-' + (prov_id || 'default') ).text()
 
 	let svg			= d3.select("svg#" + map_id + " > g");
 	let isNotProv	= _.chain(mapAddition).map('kode').includes(prov_id).value();
@@ -10,6 +11,7 @@ function zoomProv(prov_id, isMoronic) {
 		let node		= svg.node().getBBox();
 		let duration	= 750;
 
+		$( '#categories-head > span#categories-location' ).text(provName);
 		$( '#detil-content > #detil-header > #search-wrapper > input' ).val('');
 		// Compute centroid of the selected path
 		if ((mappedGeoProv[prov_id] || isNotProv) && (centered !== prov_id || isMoronic)) {
@@ -38,7 +40,7 @@ function zoomProv(prov_id, isMoronic) {
 			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
 
 			getDetil(category, prov_id, detilParams, (data) => {
-				$( '#prov-name' ).text($( '#drop-prov-' + prov_id ).text())
+				$( '#prov-name' ).text(provName)
 				_.forEach(data, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
 
 				d3.select('#prov-overview').classed('hidden', false);
@@ -57,9 +59,10 @@ function zoomProv(prov_id, isMoronic) {
 
 		getFilters(category, centered, _.omitBy({ kementerian }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
-			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-			changeCateHeight(formData(data, height, y));
+			changeCateHeight(formData(data.data, height, y));
+			$( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total));
 		});
 
 		d3.select('div#content-wrapper').classed('shrink', centered);
@@ -74,7 +77,7 @@ function zoomProv(prov_id, isMoronic) {
 
 function constructAdditionTable(data) {
 	return (data || []).map((o) => (
-		'<tr id="' + o._id + '" class="cursor-pointer">' +
+		'<tr id="' + o._id + '" onclick="toggleOutput(\'' + o._id + '\')" class="cursor-pointer">' +
 			['kegiatan', 'output', 'kl', 'anggaran'].map((key) => ('<td class="table-' + key + '">' + (key == 'anggaran' ? nFormatter(o[key]) : o[key]) + '</td>')).join() +
 		'</tr>'
 	)).join('');
@@ -99,4 +102,22 @@ function colorMap(data) {
 		d3.select('#prov-' + o._id).style('fill', o.color);
 		$( '#prov-' + (_.includes(addition_kode, o._id) ? 'wrapper-' : '') + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
 	});
+}
+
+function toggleOutput(id) {
+	if ($( '#' + id ).hasClass('selected') || _.isNil(id)) {
+		backState	= 'peta';
+
+		$( '#detil-wrapper' ).addClass('forced-height');
+		$( '#detil-wrapper > table > tbody tr' ).removeClass('hidden selected');
+
+	} else {
+		backState	= 'daftar';
+
+		$( '#' + id ).addClass('selected');
+		$( '#detil-wrapper' ).removeClass('forced-height');
+		$( '#detil-wrapper > table > tbody tr:not(#' + id + ')' ).addClass('hidden');
+	}
+
+	$( '#backtomap > span' ).text(backState);
 }

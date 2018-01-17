@@ -145,5 +145,5 @@ function categorySelect(data) {
 }
 
 function formData(val, height, y) {
-	return _.chain(val).keyBy('color').mapValues((o) => ({ fill: (height / 2) + y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) })).value();
+	return _.chain(val).keyBy('color').mapValues((o) => ({ fill: (height / 2) + y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) + (o.percentage !== 0 ? ' (' + o.percentage + '%)' : '') })).value();
 }

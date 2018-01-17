@@ -4,8 +4,9 @@ $( document ).ready(() => {
 	getCategories((data) => { $( '#categories-wrapper' ).html( data.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
 
 	createMaps();
+	createProgress();
 
-	// changeCategory('Nawacita');
+	changeCategory('Nawacita');
 
 	// $( '#categories-hamburger' ).click(function() {
 	// 	if ($( this ).hasClass('x-sign')) {
@@ -47,7 +48,7 @@ $( document ).ready(() => {
 		}, awaitTime);
 	});
 
-	$( '#backtomap' ).click(() => { zoomProv(null); });
+	$( '#backtomap' ).click(() => { if (backState == 'peta') { zoomProv(null); } else { toggleOutput(null); } });
 });
 
 function changeCategory(val) {
@@ -59,10 +60,10 @@ function changeCategory(val) {
 		$( '#categories-hamburger' ).removeClass('hidden');
 	});
 
-	$( '#categories-head > span' ).html(val);
+	$( '#categories-head > span#categories-title' ).html(val);
 	$( '#categories-hamburger' ).removeClass('x-sign');
 
-	getFilters(val, null, {}, (data) => { createCategoriesBar(data); });
+	getFilters(val, null, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); });
 	getMaps(val, {}, (data) => { colorMap(data); })
 
 	getLocation(val, {}, (data) => {
@@ -84,9 +85,10 @@ function changeDrop(state, id, name) {
 
 		getFilters(category, centered, _.omitBy({ kementerian: id }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
-			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-			changeCateHeight(formData(data, height, y));
+			changeCateHeight(formData(data.data, height, y));
+			$( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total));
 		});
 
 		let params	= _.omitBy({ kementerian: id }, _.isNil);

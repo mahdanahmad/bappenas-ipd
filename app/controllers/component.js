@@ -48,10 +48,10 @@ module.exports.filters = (input, category_name, location, callback) => {
 		},
 		(categories, flowCallback) => {
 			let filters		= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
-			let colors	= _.get(categories, 'colors', {});
+			let colors		= _.get(categories, 'colors', {});
 
-			let column	= categoriesMap[category_name];
-			let match	= {};
+			let column		= categoriesMap[category_name];
+			let match		= {};
 			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
 			if (location) { match.location = location; }
 			if (kementerian) { match.kementerian_kode = kementerian; }
@@ -62,9 +62,14 @@ module.exports.filters = (input, category_name, location, callback) => {
 			], {}, (err, result) => {
 				if (err) { flowCallback(err); } else {
 					let formatted	= _.chain(result).flatMap((o) => (o._id.split(' | ').map((id) => ({ id, total: o.total })))).groupBy('id').mapValues((o) => _.sumBy(o, 'total')).value();
+
 					flowCallback(err, filters.map((o) => ({ name: o, anggaran: (formatted[o] || 0), color: _.get(colors, o, defaultColor) })));
 				}
 			});
+		},
+		(data, flowCallback) => {
+			let total = _.sumBy(data, 'anggaran');
+			flowCallback(null, { total, data: data.map((o) => (_.assign(o, { percentage: _.round(((o.anggaran / total) * 100), 2) }))) });
 		}
 	], (err, asyncResult) => {
 		if (err) {

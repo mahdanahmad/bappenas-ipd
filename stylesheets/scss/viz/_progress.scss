@@ -1,0 +1,12 @@
+$circle-red		: #f26066;
+$circle-green	: #94aa6c;
+$circle-stroke	: 2px;
+
+svg#viz-progress {
+	rect { fill: white; fill-opacity: .1; }
+	path { stroke: $circle-red; stroke-width: $circle-stroke; &.active { stroke: $circle-green; }}
+	circle {
+		&.outer { fill: $content-back; stroke: $circle-red; stroke-width: $circle-stroke; &.active { stroke: $circle-green; }}
+		&.inner { fill: white; }
+	}
+}

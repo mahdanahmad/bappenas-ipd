@@ -106,13 +106,16 @@ function colorMap(data) {
 
 function toggleOutput(id, anggaran) {
 	if ($( '#' + id ).hasClass('selected') || _.isNil(id)) {
+		$( '#search-wrapper' ).show();
 		backState	= 'peta';
 
 		$( '#detil-wrapper' ).addClass('forced-height');
 		$( '#detil-wrapper > table > tbody tr' ).removeClass('hidden selected');
 
 		d3.select("#progress-wrapper > #svg-wrapper").selectAll("svg").remove();
+
 	} else {
+		$( '#search-wrapper' ).hide();
 		backState	= 'daftar';
 
 		let komponen	= _.random(5);
@@ -122,9 +125,7 @@ function toggleOutput(id, anggaran) {
 		$( '#diff-realisasi > span' ).text(komponen ? nFormatter(anggaran * multiplier) : '-');
 		$( '#diff-selisih > span' ).text(komponen ? (multiplier > 1 ? '-' : '+') + nFormatter(anggaran * Math.abs(1 - multiplier)) : '-');
 
-		_.times(komponen, (o) => {
-			createProgress(o + 1, true);
-		});
+		_.times(komponen, (o) => { createProgress(o + 1, true); });
 
 		$( '#' + id ).addClass('selected');
 		$( '#detil-wrapper' ).removeClass('forced-height');

@@ -4,7 +4,7 @@ $( document ).ready(() => {
 	getCategories((data) => { $( '#categories-wrapper' ).html( data.map((o) => ("<div class='ipd-categories float-left uppercase cursor-pointer' onclick='changeCategory(\"" + o + "\")'>" + o + "</div>")).join('') ); });
 
 	createMaps();
-	createProgress();
+	// createProgress();
 
 	changeCategory('Nawacita');
 

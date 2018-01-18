@@ -60,14 +60,17 @@
 			}
 		}
 		#progress-wrapper {
-			width: 100%;
+			width: 100%; @include clearfix(); height: calc(100% - 27px - 100px); overflow: hidden;
 			#difference-wrapper {
-				width: 100%;
+				width: 100%; @include clearfix(); margin-bottom: 15px;
 				& > div {
 					width: calc(94% / 3); display: inline-block; float: left; padding: 1%;
 					label { display: block; text-transform: uppercase; color: lightgrey; font-size: 8px; }
 					span { font-size: 11px; }
 				}
+			}
+			#svg-wrapper {
+				max-height: calc(100% - 40px); overflow: auto;
 			}
 		}
 	}

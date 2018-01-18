@@ -77,7 +77,7 @@ function zoomProv(prov_id, isMoronic) {
 
 function constructAdditionTable(data) {
 	return (data || []).map((o) => (
-		'<tr id="' + o._id + '" onclick="toggleOutput(\'' + o._id + '\')" class="cursor-pointer">' +
+		'<tr id="' + o._id + '" onclick="toggleOutput(\'' + o._id + '\', ' + o.anggaran + ')" class="cursor-pointer">' +
 			['kegiatan', 'output', 'kl', 'anggaran'].map((key) => ('<td class="table-' + key + '">' + (key == 'anggaran' ? nFormatter(o[key]) : o[key]) + '</td>')).join() +
 		'</tr>'
 	)).join('');
@@ -104,15 +104,27 @@ function colorMap(data) {
 	});
 }
 
-function toggleOutput(id) {
+function toggleOutput(id, anggaran) {
 	if ($( '#' + id ).hasClass('selected') || _.isNil(id)) {
 		backState	= 'peta';
 
 		$( '#detil-wrapper' ).addClass('forced-height');
 		$( '#detil-wrapper > table > tbody tr' ).removeClass('hidden selected');
 
+		d3.select("#progress-wrapper > #svg-wrapper").selectAll("svg").remove();
 	} else {
 		backState	= 'daftar';
+
+		let komponen	= _.random(5);
+		let multiplier	= _.random(.8, 1.1);
+
+		$( '#diff-anggaran > span' ).text(nFormatter(anggaran));
+		$( '#diff-realisasi > span' ).text(komponen ? nFormatter(anggaran * multiplier) : '-');
+		$( '#diff-selisih > span' ).text(komponen ? (multiplier > 1 ? '-' : '+') + nFormatter(anggaran * Math.abs(1 - multiplier)) : '-');
+
+		_.times(komponen, (o) => {
+			createProgress(o + 1, true);
+		});
 
 		$( '#' + id ).addClass('selected');
 		$( '#detil-wrapper' ).removeClass('forced-height');

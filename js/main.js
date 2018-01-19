@@ -57,7 +57,9 @@ function changeCategory(val) {
 	kementerian		= null;
 
 	$( '#selection' ).slideUp(() => {
-		$( '#categories-hamburger' ).removeClass('hidden');
+		// $( '#categories-hamburger' ).removeClass('hidden');
+		$( '#categories-head > i.fa-times' ).addClass('hidden');
+		$( '#categories-head > i.fa-home' ).removeClass('hidden');
 	});
 
 	$( '#categories-head > span#categories-title' ).html(val);

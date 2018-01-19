@@ -1,7 +1,8 @@
 KODE;NOMENKLATUR
-000;Bukan Tematik
-001;Anggaran Infrastruktur
-002;Kerjasama Selatan-Selatan dan Triangular (KSST)
-003;Anggaran Responsif Gender
-004;Mitigasi perubahan Iklim
-005;Anggaran Pendidikan
+1;Anggaran Infrastruktur
+2;Kerjasama Selatan-Selatan dan Triangular (KSST)
+3;Anggaran Responsif Gender
+4;Mitigasi perubahan Iklim
+5;Anggaran Pendidikan
+6;Anggaran Kesehatan
+7;Adaptasi perubahan iklim

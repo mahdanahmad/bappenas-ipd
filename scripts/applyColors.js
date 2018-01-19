@@ -14,7 +14,7 @@ const palette		= [
 	'#F1F1F2','#BCBABE','#A1D6E2','#1995AD',
 	'#9A9EAB','#5D5353','#EC96A4','#DFE166',
 	'#A1BE95','#E2DFA2','#92AAC7','#ED5752'
-]
+];
 
 const colors_coll	= 'categories';
 

@@ -1,0 +1,37 @@
+used_id,krisna_id,name
+11,06,Aceh
+12,07,Sumatera Utara
+13,08,Sumatera Barat
+14,09,Riau
+15,10,Jambi
+16,11,Sumatera Selatan
+17,26,Bengkulu
+18,12,Lampung
+19,30,Kepulauan Bangka Belitung
+21,32,Kepulauan Riau
+31,01,Dki Jakarta
+32,02,Jawa Barat
+33,03,Jawa Tengah
+34,04,Di Yogyakarta
+35,05,Jawa Timur
+36,29,Banten
+51,22,Bali
+52,23,Nusa Tenggara Barat
+53,24,Nusa Tenggara Timur
+61,13,Kalimantan Barat
+62,14,Kalimantan Tengah
+63,15,Kalimantan Selatan
+64,16,Kalimantan Timur
+65,35,Kalimantan Utara
+71,17,Sulawesi Utara
+72,18,Sulawesi Tengah
+73,19,Sulawesi Selatan
+74,20,Sulawesi Tenggara
+75,31,Gorontalo
+76,34,Sulawesi Barat
+81,21,Maluku
+82,28,Maluku Utara
+91,25,Papua
+92,33,Papua Barat
+100,0,Pusat
+101,,Luar Negeri

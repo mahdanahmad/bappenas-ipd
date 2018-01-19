@@ -29,7 +29,7 @@ MongoClient.connect(db_url, (err, client) => {
 	const db	= client.db(process.env.DB_DATABASE);
 	async.waterfall([
 		(flowCallback) => {
-			async.each([krisna_coll, cate_coll, pn_col], (o, eachCallback) => {
+			async.each([krisna_coll, cate_coll, pn_col, 'provinces', 'regencies'], (o, eachCallback) => {
 				db.collection(o).deleteMany({}, (err) => eachCallback(err));
 			}, (err) => flowCallback(err));
 		},
@@ -73,9 +73,7 @@ MongoClient.connect(db_url, (err, client) => {
 
 				csv
 					.fromPath(data_root + 'deepprio/' + o + '.csv', params)
-					.on("data", (row) => {
-						data[row.ID]	= row.Name;
-					})
+					.on("data", (row) => { data[row.ID] = row.Name; })
 					.on("end", () => { eachCallback(null, [o, data]) });
 			}, (err, results) => {
 				let prev_ids	= _.fromPairs(results);
@@ -86,7 +84,29 @@ MongoClient.connect(db_url, (err, client) => {
 					.on("data", (row) => { data.push(_.assign({}, row, _.chain(['KP', 'PN', 'PP']).map((o) => ([(o + '_name'), prev_ids[o][row[(o + '_id')]]])).fromPairs().value())); })
 					.on("end", () => { db.collection(pn_col).insertMany(data, (err, result) => flowCallback(err)); });
 			});
-		}
+		},
+		(flowCallback) => {
+			async.each(['provinces', 'regencies'], (o, eachCallback) => {
+				let data	= [];
+				csv
+					.fromPath(data_root + 'initial/' + o + '.csv', _.assign({}, params, { delimiter: ',' }))
+					.on('data', (row) => { data.push(row); })
+					.on('end', () => { db.collection(o).insertMany(data, (err, result) => eachCallback(err)); })
+			}, (err) => flowCallback(err));
+		},
+		(flowCallback) => {
+			async.map(['provinces', 'regencies'], (o, eachCallback) => {
+				let data	= {};
+				csv
+					.fromPath(data_root + 'initial/mapped-' + o + '.csv', _.assign({}, params, { delimiter: ',' }))
+					.on('data', (row) => { data[row.krisna_id] = row.used_id; })
+					.on('end', () => { eachCallback(null, [o, data]); })
+			}, (err, results) => flowCallback(err, _.fromPairs(results)));
+		},
+		(mapped_ids, flowCallback) => {
+			
+			flowCallback();
+		},
 	], (err, result) => {
 		assert.equal(null, err);
 		client.close();

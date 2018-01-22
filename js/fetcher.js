@@ -2,16 +2,16 @@ function getCategories(callback) {
 	$.get('/api/categories', (data) => (callback(data.result)));
 }
 
-function getFilters(category, location, params, callback) {
-	$.get('/api/filters/' + category + (location ? '/' + location : ''), params, (data) => (callback(data.result)));
+function getFilters(category, params, callback) {
+	$.get('/api/filters/' + category, params, (data) => (callback(data.result)));
 }
 
 function getMaps(category, params, callback) {
 	$.get('/api/maps/' + category, params, (data) => (callback(data.result)));
 }
 
-function getDetil(category, location, params, callback) {
-	$.get('/api/detil/' + category + '/' + location, params, (data) => (callback(data.result)));
+function getDetil(category, params, callback) {
+	$.get('/api/detil/' + category, params, (data) => (callback(data.result)));
 }
 
 function getOutput(category, location, params, callback) {

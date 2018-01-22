@@ -65,7 +65,7 @@ function changeCategory(val) {
 	$( '#categories-head > span#categories-title' ).html(val);
 	$( '#categories-hamburger' ).removeClass('x-sign');
 
-	getFilters(val, null, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); });
+	getFilters(val, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); });
 	getMaps(val, {}, (data) => { colorMap(data); })
 
 	getLocation(val, {}, (data) => {
@@ -84,8 +84,7 @@ function changeDrop(state, id, name) {
 	if (state == 'location') { zoomProv(id, true); }
 	if (state == 'kementerian') {
 		kementerian	= id;
-
-		getFilters(category, centered, _.omitBy({ kementerian: id }, _.isNil), (data) => {
+		getFilters(category, _.omitBy({ kementerian: id, provinsi: centered }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 

@@ -33,3 +33,5 @@ province_id,country_id,province_name,name_alt,old_id
 82,ID,Maluku Utara,NULL,NULL
 92,ID,Papua Barat,NULL,NULL
 91,ID,Papua,NULL,NULL
+100,ID,Pusat,NULL,NULL
+101,LN,Luar Negeri,NULL,NULL

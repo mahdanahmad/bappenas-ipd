@@ -1,19 +1,19 @@
 used_id,krisna_id,name
-11,06,Aceh
-12,07,Sumatera Utara
-13,08,Sumatera Barat
-14,09,Riau
+11,6,Aceh
+12,7,Sumatera Utara
+13,8,Sumatera Barat
+14,9,Riau
 15,10,Jambi
 16,11,Sumatera Selatan
 17,26,Bengkulu
 18,12,Lampung
 19,30,Kepulauan Bangka Belitung
 21,32,Kepulauan Riau
-31,01,Dki Jakarta
-32,02,Jawa Barat
-33,03,Jawa Tengah
-34,04,Di Yogyakarta
-35,05,Jawa Timur
+31,1,Dki Jakarta
+32,2,Jawa Barat
+33,3,Jawa Tengah
+34,4,Di Yogyakarta
+35,5,Jawa Timur
 36,29,Banten
 51,22,Bali
 52,23,Nusa Tenggara Barat

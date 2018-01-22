@@ -32,7 +32,7 @@ function createMaps() {
 		.data(mapAddition).enter().append('g')
 			.attr('id', (o) => ('prov-wrapper-' + o.kode))
 			.attr('class', 'addition')
-			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 16) * (i + 1)) + (height / 4) * (i + 0.5)) + ')'));
+			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 12) * (i + 1)) + (height / 3) * (i + 0.5)) + ')'));
 
 	addition.append("circle")
 		.attr('id', (o) => ('prov-' + o.kode))

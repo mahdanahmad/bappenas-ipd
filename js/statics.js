@@ -3,8 +3,7 @@ const map_id		= 'maps-viz';
 const defaultColor	= '#5a6569';
 const mapAddition	= [
 	{ kode: '100', nama: 'Pusat' },
-	{ kode: '101', nama: 'Perwakilan RI di Luar Negeri' },
-	{ kode: '102', nama: 'Asia Tenggara' },
+	{ kode: '101', nama: 'Luar Negeri' },
 ];
 let mappedGeoProv	= {};
 let centered, path;

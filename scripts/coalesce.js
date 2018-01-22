@@ -22,6 +22,14 @@ let janpres_group	= {};
 
 const palette		= ['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe', '#008080', '#e6beff', '#aa6e28', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000080'];
 
+// const palette		= [
+// 	'#F98866','#FF420E','#80BD9E','#89DA59',
+// 	'#F1F1F2','#BCBABE','#A1D6E2','#1995AD',
+// 	'#9A9EAB','#5D5353','#EC96A4','#DFE166',
+// 	'#A1BE95','#E2DFA2','#92AAC7','#ED5752',
+// 	'#5BC8AC','#E6D72A','#F18D9E','#98DBC6',
+// ];
+
 MongoClient.connect(db_url, (err, client) => {
 	assert.equal(null, err);
 	console.log("Connected correctly to server");
@@ -104,8 +112,21 @@ MongoClient.connect(db_url, (err, client) => {
 			}, (err, results) => flowCallback(err, _.fromPairs(results)));
 		},
 		(mapped_ids, flowCallback) => {
-			
-			flowCallback();
+			csv
+				.fromPath(data_root + 'raw.csv', params)
+				.on('data', (row) => {
+					let picked	= _.chain(row).clone().assign({
+						anggaran: parseInt(row.Anggaran.split('.').join('')),
+						janpres_group: '' + janpres_group[row.Janpres] || null,
+						provinsi: row.provinsi == '' ? null : (mapped_ids.provinces[row.kd_prov] || mapped_ids.provinces['']),
+						kabupaten: mapped_ids.regencies[row.kd_kota] || null,
+						Tematik: _.last(row.Tematik) == ',' ? row.Tematik.slice(0, -1) : row.Tematik,
+						// kd_nawacita: '' + parseInt(row.kd_nawacita),
+					}).omit(['PN', 'PP', 'KP', 'PPN', 'Kota', 'nawacita', 'Anggaran']).value();
+
+					db.collection(krisna_coll).insert(picked, (err, result) => {});
+				})
+				.on('end', () => { flowCallback(); });
 		},
 	], (err, result) => {
 		assert.equal(null, err);

@@ -36,10 +36,10 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('.province#prov-' + prov_id).classed('unintended', false);
 			d3.selectAll('.province:not(#prov-' + prov_id + ')').classed('unintended', true);
 
-			let detilParams	= _.omitBy({ kementerian }, _.isNil);
+			let detilParams	= _.omitBy({ kementerian, provinsi: prov_id }, _.isNil);
 			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
 
-			getDetil(category, prov_id, detilParams, (data) => {
+			getDetil(category, detilParams, (data) => {
 				$( '#prov-name' ).text(provName)
 				_.forEach(data, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
 
@@ -57,7 +57,7 @@ function zoomProv(prov_id, isMoronic) {
 			d3.select('#prov-overview').classed('hidden', true);
 		}
 
-		getFilters(category, centered, _.omitBy({ kementerian }, _.isNil), (data) => {
+		getFilters(category, _.omitBy({ kementerian, provinsi: centered }, _.isNil), (data) => {
 			let height	= $(cate_dest).outerHeight(true);
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 

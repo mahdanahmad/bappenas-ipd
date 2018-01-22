@@ -30,7 +30,8 @@ function createCategoriesBar(data) {
 
 	let groupBar	= svg.selectAll('group-bar').data(data).enter()
 		.append('g')
-			.attr('id', (o) => (o.color.replace('#', '')))
+			// .attr('id', (o) => (o.color.replace('#', '')))
+			.attr('id', (o) => (o.kode))
 			.attr('class', 'group-bar');
 
 	groupBar.append("rect")
@@ -129,14 +130,14 @@ function changeCateHeight(data) {
 }
 
 function categorySelect(data) {
-	$( '.group-bar' + data.color ).toggleClass('unintended');
+	$( '.group-bar#' + data.kode ).toggleClass('unintended');
 
 	clearTimeout(categoryTimeout);
 
 	categoryTimeout	= setTimeout(() => {
-		activeFilter	= $(' .group-bar:not(.unintended) > foreignObject > div ').map(function () {
-			let currText	= $( this ).text();
-			return currText.substring(currText.indexOf('. ') + 2);
+		activeFilter	= $(' .group-bar:not(.unintended) ').map(function() {
+			let currText	= $( this ).attr('id');
+			return currText;
 		}).get();
 
 		getMaps(category, _.omitBy({ filters: JSON.stringify(activeFilter), kementerian }, _.isNil), (data) => { colorMap(data); })

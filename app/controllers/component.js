@@ -2,14 +2,16 @@ const _				= require('lodash');
 const async			= require('async');
 
 const krisna		= require('../models/krisna');
+const provinces		= require('../models/provinces');
+const regencies		= require('../models/regencies');
 const categories	= require('../models/categories');
 
 const defaultColor	= '#5a6569';
 const categoriesMap	= {
-	'Tematik': 'tematik_nomen',
-	'Nawacita': 'nawacita_nomen',
+	'Tematik': 'Tematik',
+	'Nawacita': 'kd_nawacita',
 	'100 Janji Presiden': 'janpres_group',
-	'Prioritas Nasional': 'pn_nomen',
+	'Prioritas Nasional': 'kd_PN',
 }
 
 module.exports.categories = (callback) => {
@@ -34,36 +36,39 @@ module.exports.categories = (callback) => {
 	});
 }
 
-module.exports.filters = (input, category_name, location, callback) => {
+module.exports.filters = (input, category_name, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get all filters for ' + category_name + ' success.';
 	let result          = null;
 
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian	: null;
+	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi	: null;
+	const kabupaten		= !_.isNil(input.kabupaten)		? input.kabupaten	: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filters		= _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value();
+			let filters		= _.chain(categories).get('filters', []).value();
 			let colors		= _.get(categories, 'colors', {});
 
 			let column		= categoriesMap[category_name];
 			let match		= {};
-			match[column]	= { '$in': filters.map((o) => (new RegExp(o))) };
-			if (location) { match.location = location; }
-			if (kementerian) { match.kementerian_kode = kementerian; }
+			match[column]	= { '$in': filters.map((o) => (new RegExp(o.KODE))) };
+			if (provinsi) { match.provinsi = provinsi; }
+			if (kabupaten) { match.kabupaten = kabupaten; }
+			if (kementerian) { match.kd_kementerian = kementerian; }
 
 			krisna.rawAggregate([
 				{ '$match': match },
-				{ '$group': { _id: '$' + column, total: { '$sum': '$alokasi' }} }
+				{ '$group': { _id: '$' + column, total: { '$sum': '$anggaran' }} }
 			], {}, (err, result) => {
 				if (err) { flowCallback(err); } else {
-					let formatted	= _.chain(result).flatMap((o) => (o._id.split(' | ').map((id) => ({ id, total: o.total })))).groupBy('id').mapValues((o) => _.sumBy(o, 'total')).value();
+					let formatted	= _.chain(result).flatMap((o) => (o._id.split(',').map((id) => ({ id, total: o.total })))).groupBy('id').mapValues((o) => _.sumBy(o, 'total')).value();
 
-					flowCallback(err, filters.map((o) => ({ name: o, anggaran: (formatted[o] || 0), color: _.get(colors, o, defaultColor) })));
+					flowCallback(err, filters.map((o) => ({ kode: o.KODE, name: o.NOMENKLATUR, anggaran: (formatted[o.KODE] || 0), color: o.color })));
 				}
 			});
 		},
@@ -91,32 +96,39 @@ module.exports.maps = (input, category_name, callback) => {
 
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
+	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi				: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			krisna.distinct('location', {}, (err, result) => flowCallback(err, categories, result));
+			if (provinsi) {
+				regencies.distinct('regency_id', { province_id: provinsi }, (err, result) => flowCallback(err, categories, result));
+			} else {
+				provinces.distinct('province_id', {}, (err, result) => flowCallback(err, categories, result));
+			}
 		},
 		(categories, locations, flowCallback) => {
-			let filt	= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
-			let colors	= _.get(categories, 'colors', {});
+			let filt	= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
+			let colors	= _.chain(categories).get('filters', []).map((o) => ([o.KODE, o.color])).fromPairs().value();
 
 			let column	= categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
-			if (kementerian) { match.kementerian_kode = kementerian; }
+			match[(provinsi ? 'kabupaten' : 'provinsi')]	= { '$in': locations };
+			if (kementerian) { match.kd_kementerian = kementerian; }
 
 			krisna.rawAggregate([
 				{ '$match': match },
-				{ '$group': { _id: { location: '$location', column: '$' + column }, anggaran: { '$sum': '$alokasi' }} },
+				{ '$group': { _id: { location: '$' + (provinsi ? 'kabupaten' : 'provinsi'), column: '$' + column }, anggaran: { '$sum': '$anggaran' }} },
 				{ '$group': { _id: '$_id.location', data: { '$push': { column: '$_id.column', anggaran: '$anggaran' }}} }
 			], {}, (err, result) => {
 				if (err) { flowCallback(err); } else {
 					let formatted	= _.chain(result).map((o) => ({
 						_id: o._id,
-						filter: _.chain(o.data).flatMap((d) => (d.column.split(' | ').map((id) => ({ id, anggaran: d.anggaran })))).groupBy('id').mapValues((o) => _.sumBy(o, 'anggaran')).toPairs().maxBy((d) => (d[1])).get('0', '').value()
+						// data: o.data,
+						filter: _.chain(o.data).flatMap((d) => (d.column.split(',').map((id) => ({ id, anggaran: d.anggaran })))).groupBy('id').mapValues((o) => _.sumBy(o, 'anggaran')).toPairs().maxBy((d) => (d[1])).get('0', '').value()
 					})).map((o) => ([o._id, _.get(colors, o.filter, null)])).fromPairs().value();
 					flowCallback(null, locations.map((o) => ({ _id: o, color: _.get(formatted, o, defaultColor) })));
 				}
@@ -134,7 +146,7 @@ module.exports.maps = (input, category_name, callback) => {
 	});
 }
 
-module.exports.detillocation = (input, category_name, location, callback) => {
+module.exports.detillocation = (input, category_name, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get maps data for ' + category_name + ' success.';
@@ -142,22 +154,26 @@ module.exports.detillocation = (input, category_name, location, callback) => {
 
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
+	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi				: null;
+	const kabupaten		= !_.isNil(input.kabupaten)		? input.kabupaten				: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filt	= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
+			let filt	= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
 
 			let column	= categoriesMap[category_name];
-			let match	= { location };
+			let match	= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
-			if (kementerian) { match.kementerian_kode = kementerian; }
+			if (kementerian) { match.kd_kementerian = kementerian; }
+			if (provinsi) { match.provinsi = provinsi; }
+			if (kabupaten) { match.kabupaten = kabupaten; }
 
 			krisna.rawAggregate([
 				{ '$match': match },
-				{ '$group': { _id: '$location', output: { '$sum': 1 }, anggaran: { '$sum': '$alokasi' }, kementerian: {  '$addToSet': '$kementerian_nomen' }} },
+				{ '$group': { _id: '$' + (provinsi ? 'kabupaten' : 'provinsi'), output: { '$sum': 1 }, anggaran: { '$sum': '$anggaran' }, kementerian: {  '$addToSet': '$kementerian' }} },
 				{ '$project': { _id: 0, output: 1, anggaran: 1, kementerian: { '$size': '$kementerian' }} }
 			], {}, (err, result) => flowCallback(err, _.assign(result[0], { anggaran: 'Rp. ' + _.get(result, '[0].anggaran', 0).toString().replace( /(\d)(?=(\d{3})+$)/g, "$1." ) + ',00' })));
 		}
@@ -182,7 +198,7 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 	const onepage		= 20;
 
 	let currentpage		= !_.isNil(input.page)			? _.toInteger(input.page)		: 0;
-	let sortby			= !_.isNil(input.sort)			? _.toInteger(input.sort)		: 'alokasi';
+	let sortby			= !_.isNil(input.sort)			? _.toInteger(input.sort)		: 'anggaran';
 
 	const like			= !_.isNil(input.like)			? input.like					: null;
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
@@ -193,22 +209,22 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 		},
 		(categories, flowCallback) => {
-			let filt		= (filters || _.chain(categories).get('filters', []).map('NOMENKLATUR').uniq().value());
+			let filt		= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
 
 			let column		= categoriesMap[category_name];
-			let match		= { location };
+			let match		= { provinsi: location };
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			let sort		= {};
 			sort[sortby]	= -1;
-			if (kementerian) { match.kementerian_kode = kementerian; }
-			if (like) { match.output_nomen = new RegExp(like, 'i') }
+			if (kementerian) { match.kd_kementerian = kementerian; }
+			if (like) { match.output = new RegExp(like, 'i') }
 
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$sort': sort },
 				{ '$skip': (currentpage * onepage) },
 				{ '$limit': onepage },
-				{ '$project': { kegiatan: '$kegiatan_nomen', output: '$output_nomen', kl: '$kementerian_nomen', anggaran: '$alokasi' }},
+				{ '$project': { kegiatan: '$Kegiatan', output: '$output', kl: '$kementerian', anggaran: '$anggaran' }},
 			], {}, (err, result) => flowCallback(err, { iteratee: (currentpage + 1), data: result }));
 		}
 	], (err, asyncResult) => {
@@ -236,7 +252,7 @@ module.exports.kementerian = (input, category_name, callback) => {
 			if (filters) {
 				flowCallback(null, filters);
 			} else {
-				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
 			}
 		},
 		(filt, flowCallback) => {
@@ -246,7 +262,7 @@ module.exports.kementerian = (input, category_name, callback) => {
 
 			krisna.rawAggregate([
 				{ '$match': match },
-				{ '$group': { _id: { id: '$kementerian_kode', name: '$kementerian_nomen' }}},
+				{ '$group': { _id: { id: '$kd_kementerian', name: '$kementerian' }}},
 				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
 				{ '$sort': { name: 1 }}
 			], {}, (err, result) => flowCallback(err, result));
@@ -270,26 +286,34 @@ module.exports.location = (input, category_name, callback) => {
 	let result          = null;
 
 	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const provinsi		= !_.isNil(input.provinsi)	? input.provinsi				: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			if (filters) {
 				flowCallback(null, filters);
 			} else {
-				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('NOMENKLATUR').uniq().value()));
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
 			}
 		},
 		(filt, flowCallback) => {
 			let column		= categoriesMap[category_name];
 			let match		= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			if (provinsi) { match.provinsi = provinsi; }
 
-			krisna.rawAggregate([
-				{ '$match': match },
-				{ '$group': { _id: { id: '$location', name: '$provinsi_nomen' }}},
-				{ '$project': { id: '$_id.id', name: '$_id.name', _id: 0 }},
-				{ '$sort': { name: 1 }}
-			], {}, (err, result) => flowCallback(err, result));
+			krisna.distinct((provinsi ? 'kabupaten' : 'provinsi'), match, (err, result) => flowCallback(err, _.compact(result)));
+		},
+		(locations, flowCallback) => {
+			let collection	= provinsi ? regencies : provinces;
+
+			let match		= {};
+			match[(provinsi ? 'regency_id' : 'province_id')]	= { '$in': locations };
+
+			collection.findAll(match, {}, (err, result) => flowCallback(err, result.map((o) => ({
+				id: o[(provinsi ? 'regency_id' : 'province_id')],
+				name: o[(provinsi ? 'regency_name' : 'province_name')],
+			}))));
 		}
 	], (err, asyncResult) => {
 		if (err) {

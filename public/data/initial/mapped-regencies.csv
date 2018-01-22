@@ -1,93 +1,93 @@
 used_id,krisna_id,name
-1101,0609,Simeulue
-1102,0610,Aceh Singkil
-1103,0605,Aceh Selatan
-1104,0608,Aceh Tenggara
-1105,0604,Aceh Timur
-1106,0607,Aceh Tengah
-1107,0606,Aceh Barat
-1107,0655,Aceh Barat
-1108,0601,Aceh Besar
-1109,0602,Pidie
-1110,0611,Bireuen
-1111,0603,Aceh Utara
-1112,0612,Aceh Barat Daya
-1113,0613,Gayo Lues
-1114,0616,Aceh Tamiang
-1115,0615,Nagan Raya
-1116,0614,Aceh Jaya
-1117,0617,Bener Meriah
-1118,0618,Pidie Jaya
-1171,0651,Banda Aceh
-1172,0652,Sabang
-1173,0653,Langsa
-1174,0654,Lhokseumawe
-1175,0656,Subulussalam
-1201,0711,Nias
-1202,0713,Mandailing Natal
-1203,0709,Tapanuli Selatan
-1204,0704,Tapanuli Tengah
-1205,0708,Tapanuli Utara
-1206,0717,Toba Samosir
-1207,0706,Labuhan Batu
-1208,0710,Asahan
-1209,0705,Simalungun
-1210,0707,Dairi
-1210,0760,Dairi
-1211,0702,Karo
-1212,0701,Deli Serdang
-1212,0759,Deli Serdang
-1213,0703,Langkat
-1214,0714,Nias Selatan
-1215,0716,Humbang Hasundutan
-1216,0715,Pakpak Bharat
-1217,0712,Samosir
-1218,0720,Serdang Bedagai
-1219,0721,Batu Bara
-1220,0723,Padang Lawas Utara
-1221,0722,Padang Lawas
-1222,0724,Labuhan Batu Selatan
-1223,0725,Labuhan Batu Utara
-1224,0726,Nias Utara
-1225,0727,Nias Barat
-1271,0756,Sibolga
-1272,0755,Kota Tanjung Balai
-1273,0754,Pematangsiantar
-1274,0752,Tebingtinggi
-1275,0751,Kota Medan
-1276,0753,Kota Binjai
-1277,0757,Kota Padangsidimpuan
-1278,0761,Kota Gunungsitoli
-1301,0809,Kepulauan Mentawai
-1302,0806,Pesisir Selatan
-1304,0813,Sijunjung
-1305,0807,Tanah Datar
-1306,0805,Padang Pariaman
-1307,0801,Agam
-1308,0803,Lima Puluh Kota
-1309,0802,Pasaman
-1310,0811,Solok Selatan
-1311,0810,Dharmasraya
-1312,0812,Pasaman Barat
-1371,0855,Padang
-1372,0853,Solok
-1373,0854,Sawahlunto
-1374,0852,Padang Panjang
-1375,0851,Bukittinggi
-1376,0856,Kota Payakumbuh
-1377,0857,Pariaman
-1401,0912,Kuantan Singingi
-1402,0904,Indragiri Hulu
-1403,0905,Indragiri Hilir
-1404,0906,Pelalawan
-1405,0909,Siak
-1406,0901,Kampar
-1407,0907,Rokan Hulu
-1408,0902,Bengkalis
-1409,0908,Rokan Hilir
-1410,0913,Kepulauan Meranti
-1471,0951,Kota Pekanbaru
-1473,0953,Dumai
+1101,609,Simeulue
+1102,610,Aceh Singkil
+1103,605,Aceh Selatan
+1104,608,Aceh Tenggara
+1105,604,Aceh Timur
+1106,607,Aceh Tengah
+1107,606,Aceh Barat
+1107,655,Aceh Barat
+1108,601,Aceh Besar
+1109,602,Pidie
+1110,611,Bireuen
+1111,603,Aceh Utara
+1112,612,Aceh Barat Daya
+1113,613,Gayo Lues
+1114,616,Aceh Tamiang
+1115,615,Nagan Raya
+1116,614,Aceh Jaya
+1117,617,Bener Meriah
+1118,618,Pidie Jaya
+1171,651,Banda Aceh
+1172,652,Sabang
+1173,653,Langsa
+1174,654,Lhokseumawe
+1175,656,Subulussalam
+1201,711,Nias
+1202,713,Mandailing Natal
+1203,709,Tapanuli Selatan
+1204,704,Tapanuli Tengah
+1205,708,Tapanuli Utara
+1206,717,Toba Samosir
+1207,706,Labuhan Batu
+1208,710,Asahan
+1209,705,Simalungun
+1210,707,Dairi
+1210,760,Dairi
+1211,702,Karo
+1212,701,Deli Serdang
+1212,759,Deli Serdang
+1213,703,Langkat
+1214,714,Nias Selatan
+1215,716,Humbang Hasundutan
+1216,715,Pakpak Bharat
+1217,712,Samosir
+1218,720,Serdang Bedagai
+1219,721,Batu Bara
+1220,723,Padang Lawas Utara
+1221,722,Padang Lawas
+1222,724,Labuhan Batu Selatan
+1223,725,Labuhan Batu Utara
+1224,726,Nias Utara
+1225,727,Nias Barat
+1271,756,Sibolga
+1272,755,Kota Tanjung Balai
+1273,754,Pematangsiantar
+1274,752,Tebingtinggi
+1275,751,Kota Medan
+1276,753,Kota Binjai
+1277,757,Kota Padangsidimpuan
+1278,761,Kota Gunungsitoli
+1301,809,Kepulauan Mentawai
+1302,806,Pesisir Selatan
+1304,813,Sijunjung
+1305,807,Tanah Datar
+1306,805,Padang Pariaman
+1307,801,Agam
+1308,803,Lima Puluh Kota
+1309,802,Pasaman
+1310,811,Solok Selatan
+1311,810,Dharmasraya
+1312,812,Pasaman Barat
+1371,855,Padang
+1372,853,Solok
+1373,854,Sawahlunto
+1374,852,Padang Panjang
+1375,851,Bukittinggi
+1376,856,Kota Payakumbuh
+1377,857,Pariaman
+1401,912,Kuantan Singingi
+1402,904,Indragiri Hulu
+1403,905,Indragiri Hilir
+1404,906,Pelalawan
+1405,909,Siak
+1406,901,Kampar
+1407,907,Rokan Hulu
+1408,902,Bengkalis
+1409,908,Rokan Hilir
+1410,913,Kepulauan Meranti
+1471,951,Kota Pekanbaru
+1473,953,Dumai
 1501,1005,Kerinci
 1502,1006,Merangin
 1503,1004,Sarolangun
@@ -155,99 +155,99 @@ used_id,krisna_id,name
 2105,3205,Kepulauan Anambas
 2171,3251,Kota Batam
 2172,3252,Tanjungpinang
-3101,0156,Kepulauan Seribu
-3171,0154,Jakarta Selatan
-3172,0155,Jakarta Timur
-3173,0151,Jakarta Pusat
-3174,0153,Jakarta Barat
-3175,0152,Jakarta Utara
-3203,0207,Cianjur
-3205,0214,Garut
-3207,0216,Ciamis
-3207,0222,Ciamis
-3208,0218,Kuningan
-3210,0220,Majalengka
-3211,0213,Sumedang
-3212,0219,Indramayu
-3213,0211,Subang
-3214,0210,Purwakarta
-3215,0209,Karawang
-3217,0221,Bandung Barat
-3271,0205,Bogor
-3272,0206,Sukabumi
-3273,0212,Bandung
-3274,0217,Cirebon
-3275,0257,Bekasi
-3276,0258,Depok
-3277,0261,Cimahi
-3278,0260,Tasikmalaya
-3301,0316,Cilacap
-3302,0315,Banyumas
-3303,0317,Purbalingga
-3304,0318,Banjarnegara
-3305,0323,Kebumen
-3306,0322,Purworejo
-3307,0321,Wonosobo
-3309,0325,Boyolali
-3310,0324,Klaten
-3311,0327,Sukoharjo
-3312,0329,Wonogiri
-3313,0328,Karanganyar
-3314,0326,Sragen
-3315,0304,Grobogan
-3316,0314,Blora
-3317,0313,Rembang
-3318,0309,Pati
-3319,0310,Kudus
-3320,0312,Jepara
-3321,0303,Demak
-3323,0320,Temanggung
-3324,0302,Kendal
-3325,0306,Batang
-3327,0311,Pemalang
-3329,0308,Brebes
-3371,0319,Magelang
-3372,0356,Surakarta
-3373,0352,Salatiga
-3374,0301,Semarang
-3375,0305,Pekalongan
-3376,0307,Tegal
-3401,0404,Kulon Progo
-3402,0401,Bantul
-3403,0403,Gunung Kidul
-3404,0402,Sleman
-3471,0451,Kota Yogyakarta
-3501,0526,Pacitan
-3502,0525,Ponorogo
-3503,0520,Trenggalek
-3504,0518,Tulungagung
-3508,0516,Lumajang
-3509,0512,Jember
-3510,0511,Banyuwangi
-3511,0509,Bondowoso
-3512,0510,Situbondo
-3515,0503,Sidoarjo
-3517,0504,Jombang
-3518,0519,Nganjuk
-3520,0524,Magetan
-3521,0523,Ngawi
-3522,0527,Bojonegoro
-3523,0528,Tuban
-3524,0529,Lamongan
-3525,0501,Gresik
-3526,0508,Bangkalan
-3527,0505,Sampang
-3528,0506,Pamekasan
-3529,0507,Sumenep
-3571,0517,Kediri
-3572,0556,Blitar
-3573,0513,Malang
-3574,0515,Probolinggo
-3575,0514,Pasuruan
-3576,0502,Mojokerto
-3577,0522,Madiun
-3578,0551,Surabaya
-3579,0559,Batu
+3101,156,Kepulauan Seribu
+3171,154,Jakarta Selatan
+3172,155,Jakarta Timur
+3173,151,Jakarta Pusat
+3174,153,Jakarta Barat
+3175,152,Jakarta Utara
+3203,207,Cianjur
+3205,214,Garut
+3207,216,Ciamis
+3207,222,Ciamis
+3208,218,Kuningan
+3210,220,Majalengka
+3211,213,Sumedang
+3212,219,Indramayu
+3213,211,Subang
+3214,210,Purwakarta
+3215,209,Karawang
+3217,221,Bandung Barat
+3271,205,Bogor
+3272,206,Sukabumi
+3273,212,Bandung
+3274,217,Cirebon
+3275,257,Bekasi
+3276,258,Depok
+3277,261,Cimahi
+3278,260,Tasikmalaya
+3301,316,Cilacap
+3302,315,Banyumas
+3303,317,Purbalingga
+3304,318,Banjarnegara
+3305,323,Kebumen
+3306,322,Purworejo
+3307,321,Wonosobo
+3309,325,Boyolali
+3310,324,Klaten
+3311,327,Sukoharjo
+3312,329,Wonogiri
+3313,328,Karanganyar
+3314,326,Sragen
+3315,304,Grobogan
+3316,314,Blora
+3317,313,Rembang
+3318,309,Pati
+3319,310,Kudus
+3320,312,Jepara
+3321,303,Demak
+3323,320,Temanggung
+3324,302,Kendal
+3325,306,Batang
+3327,311,Pemalang
+3329,308,Brebes
+3371,319,Magelang
+3372,356,Surakarta
+3373,352,Salatiga
+3374,301,Semarang
+3375,305,Pekalongan
+3376,307,Tegal
+3401,404,Kulon Progo
+3402,401,Bantul
+3403,403,Gunung Kidul
+3404,402,Sleman
+3471,451,Kota Yogyakarta
+3501,526,Pacitan
+3502,525,Ponorogo
+3503,520,Trenggalek
+3504,518,Tulungagung
+3508,516,Lumajang
+3509,512,Jember
+3510,511,Banyuwangi
+3511,509,Bondowoso
+3512,510,Situbondo
+3515,503,Sidoarjo
+3517,504,Jombang
+3518,519,Nganjuk
+3520,524,Magetan
+3521,523,Ngawi
+3522,527,Bojonegoro
+3523,528,Tuban
+3524,529,Lamongan
+3525,501,Gresik
+3526,508,Bangkalan
+3527,505,Sampang
+3528,506,Pamekasan
+3529,507,Sumenep
+3571,517,Kediri
+3572,556,Blitar
+3573,513,Malang
+3574,515,Probolinggo
+3575,514,Pasuruan
+3576,502,Mojokerto
+3577,522,Madiun
+3578,551,Surabaya
+3579,559,Batu
 3601,2902,Pandeglang
 3602,2903,Lebak
 3603,2904,Kabupaten Tangerang

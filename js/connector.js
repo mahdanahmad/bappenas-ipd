@@ -33,8 +33,12 @@ function zoomProv(prov_id, isMoronic) {
 			if (centered) { duration = 500; }
 
 			centered = prov_id;
-			d3.select('.province#prov-' + prov_id).classed('unintended', false);
+			d3.select('.province#prov-' + prov_id).classed('unintended', false).classed('hidden', true);
+			d3.selectAll('.kabupaten.prov-' + prov_id).classed('hidden', false);
+			d3.select('.province.hidden:not(#prov-' + prov_id + ')').classed('unintended', true).classed('hidden', false);
+
 			d3.selectAll('.province:not(#prov-' + prov_id + ')').classed('unintended', true);
+			d3.selectAll('.kabupaten:not(.hidden):not(.prov-' + prov_id + ')').classed('hidden', true);
 
 			let detilParams	= _.omitBy({ kementerian, provinsi: prov_id }, _.isNil);
 			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
@@ -46,6 +50,8 @@ function zoomProv(prov_id, isMoronic) {
 				d3.select('#prov-overview').classed('hidden', false);
 			});
 
+			getMaps(category, detilParams, (data) => { colorKabs(data, prov_id); });
+
 			appendAdditionTable();
 		} else {
 			x = node.width / 2;
@@ -54,6 +60,8 @@ function zoomProv(prov_id, isMoronic) {
 
 			centered = null;
 			d3.selectAll('.province').classed('unintended', false);
+			d3.selectAll('.province.hidden').classed('hidden', false);
+			d3.selectAll('.kabupaten:not(.hidden)').classed('hidden', true);
 			d3.select('#prov-overview').classed('hidden', true);
 		}
 
@@ -101,6 +109,15 @@ function colorMap(data) {
 	data.forEach((o) => {
 		d3.select('#prov-' + o._id).style('fill', o.color);
 		$( '#prov-' + (_.includes(addition_kode, o._id) ? 'wrapper-' : '') + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
+	});
+}
+
+function colorKabs(data, prov_id) {
+	console.log(data);
+	$( '.kabupaten.prov-' + prov_id ).removeClass('cursor-pointer cursor-not-allowed');
+	data.forEach((o) => {
+		d3.select('#kab-' + o._id).style('fill', o.color);
+		$( '#kab-' + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
 	});
 }
 

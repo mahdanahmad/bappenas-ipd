@@ -119,6 +119,8 @@ module.exports.maps = (input, category_name, callback) => {
 			match[(provinsi ? 'kabupaten' : 'provinsi')]	= { '$in': locations };
 			if (kementerian) { match.kd_kementerian = kementerian; }
 
+			console.log(match);
+
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$group': { _id: { location: '$' + (provinsi ? 'kabupaten' : 'provinsi'), column: '$' + column }, anggaran: { '$sum': '$anggaran' }} },

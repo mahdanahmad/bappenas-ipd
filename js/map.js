@@ -47,20 +47,33 @@ function createMaps() {
 
 	addition.on('click', (o) => { zoomProv(o.kode); });
 
-	d3.json('json/indonesia.json', (err, raw) => {
-		if (err) return console.error(err);
+	d3.queue()
+		.defer(d3.json, 'json/indonesia.json')
+		.defer(d3.json, 'json/kabupaten.geojson')
+		.await((err, prov, kabs) => {
+			if (err) return console.error(err);
 
-		let states		= topojson.feature(raw, raw.objects.map);
-		mappedGeoProv	= _.chain(states).get('features', []).keyBy('properties.id_provinsi').value();
+			let states		= topojson.feature(prov, prov.objects.map);
+			mappedGeoProv	= _.chain(states).get('features', []).keyBy('properties.id_provinsi').value();
 
-		svg.selectAll("path.province")
-			.data(states.features)
-				.enter().append("path")
-					.attr("id", (o) => ('prov-' + (o.properties.id_provinsi)))
-					.attr("class", (o) => ("province"))
-					.attr("d", path)
+			svg.selectAll('path.kabupaten')
+				.data(kabs.features)
+					.enter().append('path')
+					.attr("id", (o) => ('kab-' + (o.properties.id_kabkota)))
+					.attr('d', path)
+					.attr('class', (o) => ('hidden kabupaten cursor-pointer prov-' + o.properties.id_provinsi))
 					.attr('vector-effect', 'non-scaling-stroke')
 					.style("fill", defaultColor)
-					.on('click', (o) => zoomProv(o.properties.id_provinsi));
-	});
+					// .on('click', (o) => { zoomProv(parseInt(o.properties.id_provinsi, monitor_id)); });
+
+			svg.selectAll("path.province")
+				.data(states.features)
+					.enter().append("path")
+						.attr("id", (o) => ('prov-' + (o.properties.id_provinsi)))
+						.attr("class", (o) => ("province"))
+						.attr("d", path)
+						.attr('vector-effect', 'non-scaling-stroke')
+						.style("fill", defaultColor)
+						.on('click', (o) => zoomProv(o.properties.id_provinsi));
+		});
 }

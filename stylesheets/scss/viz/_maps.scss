@@ -1,6 +1,7 @@
 svg#maps-viz {
 	& > g { fill: transparent; }
 	.province { stroke: $default-back; &.unintended { fill: $default-back!important; } }
+	.kabupaten { stroke: $default-back; }
 	#addition-wrapper {
 		.addition {
 			circle {  }

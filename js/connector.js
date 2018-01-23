@@ -20,8 +20,11 @@ function zoomProv(prov_id, isMoronic) {
 			page	= 0;
 			let centroid;
 			if (!isNotProv) {
+				let bounds	= path.bounds(mappedGeoProv[prov_id]);
+
 				centroid = path.centroid(mappedGeoProv[prov_id]);
-				k = 2;
+				// k = 2;
+				k = node.width * .25 / (bounds[1][0] - bounds[0][0]);
 			} else {
 				centroid = $( '#prov-wrapper-' + prov_id ).attr('transform').replace('translate(', '').replace(')', '').split(',').map((o, i) => (parseFloat(o) - ((i * -1) * node.height / 32)));
 				k = 1.25;
@@ -81,7 +84,7 @@ function zoomProv(prov_id, isMoronic) {
 
 		svg.transition()
 			.duration(duration)
-			.attr('transform', 'translate(' + node.width / 2 + ',' + node.height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')' + (centered ? ('translate(-' + (node.width * (isNotProv ? .25 : .15)) + ',' + (node.height * (isNotProv ? .1 : .05)) + ')') : '' ));
+			.attr('transform', 'translate(' + node.width / 2 + ',' + node.height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')' + (centered ? ('translate(-' + (isNotProv ? node.width * .25 : (node.width * .3 / k)) + ',' + (isNotProv ? .1 * node.height : (.05 * node.height / k)) + ')') : '' ));
 
 		$( '#filters-provinsi .filters-value').html($( '#drop-provinsi-' + (centered ? prov_id : 'default') ).text());
 	}

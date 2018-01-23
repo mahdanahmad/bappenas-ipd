@@ -127,10 +127,12 @@ module.exports.maps = (input, category_name, callback) => {
 				if (err) { flowCallback(err); } else {
 					let formatted	= _.chain(result).map((o) => ({
 						_id: o._id,
-						// data: o.data,
-						filter: _.chain(o.data).flatMap((d) => (d.column.split(',').map((id) => ({ id, anggaran: d.anggaran })))).groupBy('id').mapValues((o) => _.sumBy(o, 'anggaran')).toPairs().maxBy((d) => (d[1])).get('0', '').value()
+						data: o.data,
+						filter: _.chain(o.data).flatMap((d) => (d.column.split(',').map((id) => ({ id, anggaran: d.anggaran })))).groupBy('id').pick(filt).mapValues((o) => _.sumBy(o, 'anggaran')).toPairs().maxBy((d) => (d[1])).get('0', '').value()
 					})).map((o) => ([o._id, _.get(colors, o.filter, null)])).fromPairs().value();
 					flowCallback(null, locations.map((o) => ({ _id: o, color: _.get(formatted, o, defaultColor) })));
+					// })).value();
+					// flowCallback(null, formatted);
 				}
 			});
 		}

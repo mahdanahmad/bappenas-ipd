@@ -39,6 +39,9 @@
 		<script src="statics.js"></script>
 		<script src="helper.js"></script>
 		<script src="fetcher.js"></script>
+
+		<script src="header.js"></script>
+		<script src="output.js"></script>
 		<script src="connector.js"></script>
 
 		<script src="progress.js"></script>
@@ -62,10 +65,17 @@
 							<img src="images/garuda.png">
 							<div id="head-title" class="uppercase cursor-default">Integrated Presidential Dashboard</div>
 						</div>
-						<div id="filters-location" class="filters-down uppercase cursor-pointer" data-jq-dropdown="#dropdown-location">
+						<div id="filters-provinsi" class="filters-down uppercase cursor-pointer" data-jq-dropdown="#dropdown-provinsi">
 							<label>Lokasi</label>
 							<div class="filters-selected">
 								<div class="filters-value">Nasional</div>
+								<i class="fa fa-caret-down" aria-hidden="true"></i>
+							</div>
+						</div>
+						<div id="filters-kabupaten" class="filters-down uppercase cursor-pointer hidden" data-jq-dropdown="#dropdown-kabupaten">
+							<label>Kabupaten</label>
+							<div class="filters-selected">
+								<div class="filters-value">Semua Kabupaten</div>
 								<i class="fa fa-caret-down" aria-hidden="true"></i>
 							</div>
 						</div>
@@ -146,7 +156,8 @@
 			</div>
 		</div>
 
-		<div id="dropdown-location" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-prov-default" class='uppercase cursor-pointer' onclick="changeDrop('location', null, 'Nasional')">Nasional</li></ul></div>
-		<div id="dropdown-kementerian" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-kl-default" class='uppercase cursor-pointer' onclick="changeDrop('kementerian', null, 'Semua Kementerian')">Semua Kementerian</li></ul></div>
+		<div id="dropdown-provinsi" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-provinsi-default" class='uppercase cursor-pointer' onclick="changeDrop('provinsi', null, 'Nasional')">Nasional</li></ul></div>
+		<div id="dropdown-kementerian" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"><li id="drop-kementerian-default" class='uppercase cursor-pointer' onclick="changeDrop('kementerian', null, 'Semua Kementerian')">Semua Kementerian</li></ul></div>
+		<div id="dropdown-kabupaten" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-left"><ul class="jq-dropdown-menu cursor-pointer"></ul><li id="drop-kabupaten-default" class='uppercase cursor-pointer' onclick="changeDrop('kabupaten', null, 'Semua Kabupaten')">Semua Kabupaten</li></div>
     </body>
 </html>

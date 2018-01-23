@@ -1,7 +1,9 @@
+$kabs-unintended: #A6A2A2;
+
 svg#maps-viz {
 	& > g { fill: transparent; }
 	.province { stroke: $default-back; &.unintended { fill: $default-back!important; } }
-	.kabupaten { stroke: $default-back; }
+	.kabupaten { stroke: $default-back; &.unintended { fill: $kabs-unintended!important; }}
 	#addition-wrapper {
 		.addition {
 			circle {  }

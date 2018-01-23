@@ -1,6 +1,6 @@
 function zoomProv(prov_id, isMoronic) {
 	if (prov_id) { prov_id = "" + prov_id; }
-	let provName	= $( '#drop-prov-' + (prov_id || 'default') ).text()
+	let provName	= $( '#drop-provinsi-' + (prov_id || 'default') ).text()
 
 	let svg			= d3.select("svg#" + map_id + " > g");
 	let isNotProv	= _.chain(mapAddition).map('kode').includes(prov_id).value();
@@ -40,6 +40,8 @@ function zoomProv(prov_id, isMoronic) {
 			d3.selectAll('.province:not(#prov-' + prov_id + ')').classed('unintended', true);
 			d3.selectAll('.kabupaten:not(.hidden):not(.prov-' + prov_id + ')').classed('hidden', true);
 
+			d3.selectAll('.kabupaten.prov-' + prov_id + '.unintended').classed('unintended', false);
+
 			let detilParams	= _.omitBy({ kementerian, provinsi: prov_id }, _.isNil);
 			if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
 
@@ -75,79 +77,53 @@ function zoomProv(prov_id, isMoronic) {
 
 		d3.select('div#content-wrapper').classed('shrink', centered);
 
+		toggleKabDrop(prov_id);
+
 		svg.transition()
 			.duration(duration)
 			.attr('transform', 'translate(' + node.width / 2 + ',' + node.height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')' + (centered ? ('translate(-' + (node.width * (isNotProv ? .25 : .15)) + ',' + (node.height * (isNotProv ? .1 : .05)) + ')') : '' ));
 
-		$( '#filters-location .filters-value').html($( '#drop-prov-' + (centered ? prov_id : 'default') ).text());
+		$( '#filters-provinsi .filters-value').html($( '#drop-provinsi-' + (centered ? prov_id : 'default') ).text());
 	}
 }
 
-function constructAdditionTable(data) {
-	return (data || []).map((o) => (
-		'<tr id="' + o._id + '" onclick="toggleOutput(\'' + o._id + '\', ' + o.anggaran + ')" class="cursor-pointer">' +
-			['kegiatan', 'output', 'kl', 'anggaran'].map((key) => ('<td class="table-' + key + '">' + (key == 'anggaran' ? nFormatter(o[key]) : o[key]) + '</td>')).join() +
-		'</tr>'
-	)).join('');
-}
+function zoomKabs(kabs_id) {
+	if ($( '.kabupaten#kab-' + kabs_id ).hasClass('cursor-pointer') || _.isNil(kabs_id)) {
+		$('#detil-wrapper > table > tbody').html(' ');
 
-function appendAdditionTable() {
-	let params	= _.omitBy({ page, kementerian }, _.isNil);
-	if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
-	let search	= $( '#detil-content > #detil-header > #search-wrapper > input' ).val();
-	if (search !== '') { params.like = search; }
+		let selectedName	= $( '#' + (kabs_id ? ('drop-kabupaten-' + kabs_id) : ('drop-provinsi-' + centered) ) ).text();
 
-	getOutput(category, centered, params, (data) => {
-		page	= data.iteratee;
-		$('#detil-wrapper > table > tbody').append(constructAdditionTable(data.data));
-	});
-}
+		page	= 0;
+		if (kabs_id) {
+			d3.selectAll('.kabupaten.prov-' + centered + ':not(#kab-' + kabs_id + ')' ).classed('unintended', true);
+			d3.selectAll('.kabupaten#kab-' + kabs_id ).classed('unintended', false);
 
-function colorMap(data) {
-	let addition_kode	= _.map(mapAddition, 'kode');
-	$( '#addition-wrapper .addition, .province' ).removeClass('cursor-pointer cursor-not-allowed');
-	data.forEach((o) => {
-		d3.select('#prov-' + o._id).style('fill', o.color);
-		$( '#prov-' + (_.includes(addition_kode, o._id) ? 'wrapper-' : '') + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
-	});
-}
+			$( '#filters-kabupaten .filters-value' ).text(selectedName);
+		} else {
+			d3.selectAll('.kabupaten.prov-' + centered ).classed('unintended', false);
+		}
 
-function colorKabs(data, prov_id) {
-	console.log(data);
-	$( '.kabupaten.prov-' + prov_id ).removeClass('cursor-pointer cursor-not-allowed');
-	data.forEach((o) => {
-		d3.select('#kab-' + o._id).style('fill', o.color);
-		$( '#kab-' + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
-	});
-}
+		let detilParams	= _.omitBy({ kementerian }, _.isNil);
+		if (kabs_id) { detilParams.kabupaten = kabs_id; } else { detilParams.provinsi = centered; }
+		if (activeFilter) { detilParams.filters = JSON.stringify(activeFilter); }
 
-function toggleOutput(id, anggaran) {
-	if ($( '#' + id ).hasClass('selected') || _.isNil(id)) {
-		$( '#search-wrapper' ).show();
-		backState	= 'peta';
+		getDetil(category, detilParams, (data) => {
+			$( '#prov-name' ).text(selectedName);
+			_.forEach(data, (o, key) => { $( '#prov-' + key + ' > span' ).text(o); });
 
-		$( '#detil-wrapper' ).addClass('forced-height');
-		$( '#detil-wrapper > table > tbody tr' ).removeClass('hidden selected');
+			d3.select('#prov-overview').classed('hidden', false);
+		});
 
-		d3.select("#progress-wrapper > #svg-wrapper").selectAll("svg").remove();
+		$( '#categories-head > span#categories-location' ).text(selectedName);
 
-	} else {
-		$( '#search-wrapper' ).hide();
-		backState	= 'daftar';
+		appendAdditionTable(kabs_id);
 
-		let komponen	= _.random(5);
-		let multiplier	= _.random(.8, 1.1);
+		getFilters(category, detilParams, (data) => {
+			let height	= $(cate_dest).outerHeight(true);
+			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
-		$( '#diff-anggaran > span' ).text(nFormatter(anggaran));
-		$( '#diff-realisasi > span' ).text(komponen ? nFormatter(anggaran * multiplier) : '-');
-		$( '#diff-selisih > span' ).text(komponen ? (multiplier > 1 ? '-' : '+') + nFormatter(anggaran * Math.abs(1 - multiplier)) : '-');
-
-		_.times(komponen, (o) => { createProgress(o + 1, true); });
-
-		$( '#' + id ).addClass('selected');
-		$( '#detil-wrapper' ).removeClass('forced-height');
-		$( '#detil-wrapper > table > tbody tr:not(#' + id + ')' ).addClass('hidden');
+			changeCateHeight(formData(data.data, height, y));
+			$( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total));
+		});
 	}
-
-	$( '#backtomap > span' ).text(backState);
 }

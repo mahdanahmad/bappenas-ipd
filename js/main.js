@@ -6,7 +6,7 @@ $( document ).ready(() => {
 	createMaps();
 	// createProgress();
 
-	changeCategory('Nawacita');
+	setTimeout(() => { changeCategory('Nawacita'); }, 1000)
 
 	// $( '#categories-hamburger' ).click(function() {
 	// 	if ($( this ).hasClass('x-sign')) {
@@ -50,58 +50,3 @@ $( document ).ready(() => {
 
 	$( '#backtomap' ).click(() => { if (backState == 'peta') { zoomProv(null); } else { toggleOutput(null); } });
 });
-
-function changeCategory(val) {
-	category		= val;
-	activeFilter	= null;
-	kementerian		= null;
-
-	$( '#selection' ).slideUp(() => {
-		// $( '#categories-hamburger' ).removeClass('hidden');
-		$( '#categories-head > i.fa-times' ).addClass('hidden');
-		$( '#categories-head > i.fa-home' ).removeClass('hidden');
-	});
-
-	$( '#categories-head > span#categories-title' ).html(val);
-	$( '#categories-hamburger' ).removeClass('x-sign');
-
-	getFilters(val, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); });
-	getMaps(val, {}, (data) => { colorMap(data); })
-
-	getLocation(val, {}, (data) => {
-		$( '#dropdown-location > ul' ).html( constructDropdown(data, 'prov') );
-	});
-	getKementerian(val, {}, (data) => {
-		$( '#dropdown-kementerian > ul' ).html( constructDropdown(data, 'kl') );
-	});
-
-}
-
-function changeDrop(state, id, name) {
-	$( '#dropdown-' + state ).jqDropdown('hide');
-	$( '#filters-' + state + ' .filters-value').html(name);
-
-	if (state == 'location') { zoomProv(id, true); }
-	if (state == 'kementerian') {
-		kementerian	= id;
-		getFilters(category, _.omitBy({ kementerian: id, provinsi: centered }, _.isNil), (data) => {
-			let height	= $(cate_dest).outerHeight(true);
-			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
-
-			changeCateHeight(formData(data.data, height, y));
-			$( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total));
-		});
-
-		let params	= _.omitBy({ kementerian: id }, _.isNil);
-		if (activeFilter) { params.filters = JSON.stringify(activeFilter); }
-		getMaps(category, params, (data) => { colorMap(data); });
-
-		zoomProv(null);
-	}
-
-}
-
-function constructDropdown(data, state) {
-	return $( '#drop-' + state + '-default' )[0].outerHTML + data.map((o) => ("<li id='drop-" + state + "-" + o.id + "' class='uppercase cursor-pointer' onclick='changeDrop(\"" + (state == 'prov' ? 'location' : 'kementerian') + "\",\"" + o.id + "\",\"" + o.name + "\")'>" + o.name + "</li>")).join('');
-
-}

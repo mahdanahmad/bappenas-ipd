@@ -18,8 +18,8 @@ router.get('/api/maps/:category_name', (req, res, next) => {
 router.get('/api/detil/:category_name', (req, res, next) => {
 	component.detillocation(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });
 });
-router.get('/api/output/:category_name/:location', (req, res, next) => {
-	component.getOutput(req.query, req.params.category_name, req.params.location, (result) => { res.status(result.status_code).json(result); });
+router.get('/api/output/:category_name/:provinsi/:kabupaten?', (req, res, next) => {
+	component.getOutput(req.query, req.params.category_name, req.params.provinsi, req.params.kabupaten, (result) => { res.status(result.status_code).json(result); });
 });
 router.get('/api/kementerian/:category_name', (req, res, next) => {
 	component.kementerian(req.query, req.params.category_name, (result) => { res.status(result.status_code).json(result); });

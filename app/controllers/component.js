@@ -119,8 +119,6 @@ module.exports.maps = (input, category_name, callback) => {
 			match[(provinsi ? 'kabupaten' : 'provinsi')]	= { '$in': locations };
 			if (kementerian) { match.kd_kementerian = kementerian; }
 
-			console.log(match);
-
 			krisna.rawAggregate([
 				{ '$match': match },
 				{ '$group': { _id: { location: '$' + (provinsi ? 'kabupaten' : 'provinsi'), column: '$' + column }, anggaran: { '$sum': '$anggaran' }} },
@@ -175,7 +173,7 @@ module.exports.detillocation = (input, category_name, callback) => {
 
 			krisna.rawAggregate([
 				{ '$match': match },
-				{ '$group': { _id: '$' + (provinsi ? 'kabupaten' : 'provinsi'), output: { '$sum': 1 }, anggaran: { '$sum': '$anggaran' }, kementerian: {  '$addToSet': '$kementerian' }} },
+				{ '$group': { _id: '$' + (provinsi ? 'provinsi' : 'kabupaten'), output: { '$sum': 1 }, anggaran: { '$sum': '$anggaran' }, kementerian: {  '$addToSet': '$kementerian' }} },
 				{ '$project': { _id: 0, output: 1, anggaran: 1, kementerian: { '$size': '$kementerian' }} }
 			], {}, (err, result) => flowCallback(err, _.assign(result[0], { anggaran: 'Rp. ' + _.get(result, '[0].anggaran', 0).toString().replace( /(\d)(?=(\d{3})+$)/g, "$1." ) + ',00' })));
 		}
@@ -191,7 +189,7 @@ module.exports.detillocation = (input, category_name, callback) => {
 	});
 }
 
-module.exports.getOutput = (input, category_name, location, callback) => {
+module.exports.getOutput = (input, category_name, provinsi, kabupaten, callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
 	let message         = 'Get output data for ' + category_name + ' success.';
@@ -214,12 +212,13 @@ module.exports.getOutput = (input, category_name, location, callback) => {
 			let filt		= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
 
 			let column		= categoriesMap[category_name];
-			let match		= { provinsi: location };
+			let match		= { provinsi };
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			let sort		= {};
 			sort[sortby]	= -1;
 			if (kementerian) { match.kd_kementerian = kementerian; }
 			if (like) { match.output = new RegExp(like, 'i') }
+			if (kabupaten) { match.kabupaten = kabupaten; }
 
 			krisna.rawAggregate([
 				{ '$match': match },

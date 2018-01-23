@@ -86,7 +86,7 @@
 	&::before, &::after { border-bottom-color: #eee!important; }
 }
 
-#dropdown-location, #dropdown-kementerian {
+#dropdown-provinsi, #dropdown-kementerian, #dropdown-kabupaten {
 	color: black;
 	ul {
 		max-height: 350px; overflow: auto;

@@ -64,7 +64,7 @@ function createMaps() {
 					.attr('class', (o) => ('hidden kabupaten cursor-pointer prov-' + o.properties.id_provinsi))
 					.attr('vector-effect', 'non-scaling-stroke')
 					.style("fill", defaultColor)
-					// .on('click', (o) => { zoomProv(parseInt(o.properties.id_provinsi, monitor_id)); });
+					.on('click', (o) => { zoomKabs(o.properties.id_kabkota, o.properties.id_provinsi); });
 
 			svg.selectAll("path.province")
 				.data(states.features)
@@ -76,4 +76,21 @@ function createMaps() {
 						.style("fill", defaultColor)
 						.on('click', (o) => zoomProv(o.properties.id_provinsi));
 		});
+}
+
+function colorMap(data) {
+	let addition_kode	= _.map(mapAddition, 'kode');
+	$( '#addition-wrapper .addition, .province' ).removeClass('cursor-pointer cursor-not-allowed');
+	data.forEach((o) => {
+		d3.select('#prov-' + o._id).style('fill', o.color);
+		$( '#prov-' + (_.includes(addition_kode, o._id) ? 'wrapper-' : '') + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
+	});
+}
+
+function colorKabs(data, prov_id) {
+	$( '.kabupaten.prov-' + prov_id ).removeClass('cursor-pointer cursor-not-allowed');
+	data.forEach((o) => {
+		d3.select('#kab-' + o._id).style('fill', o.color);
+		$( '#kab-' + o._id ).addClass(o.color == defaultColor ? 'cursor-not-allowed' : 'cursor-pointer');
+	});
 }

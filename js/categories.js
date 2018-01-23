@@ -140,7 +140,7 @@ function categorySelect(data) {
 			return currText;
 		}).get();
 
-		getMaps(category, _.omitBy({ filters: JSON.stringify(activeFilter), kementerian }, _.isNil), (data) => { colorMap(data); })
+		getMaps(category, _.omitBy({ filters: JSON.stringify(activeFilter), kementerian }, _.isNil), (data) => { colorMap(data); zoomProv(null); })
 
 	}, awaitTime);
 }

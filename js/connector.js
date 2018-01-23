@@ -33,7 +33,7 @@ function zoomProv(prov_id, isMoronic) {
 			if (centered) { duration = 500; }
 
 			centered = prov_id;
-			d3.select('.province#prov-' + prov_id).classed('unintended', false).classed('hidden', true);
+			d3.select('.province#prov-' + prov_id).classed('unintended', false).classed('hidden', !_.chain(mapAddition).map('kode').includes(prov_id).value());
 			d3.selectAll('.kabupaten.prov-' + prov_id).classed('hidden', false);
 			d3.select('.province.hidden:not(#prov-' + prov_id + ')').classed('unintended', true).classed('hidden', false);
 

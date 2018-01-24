@@ -20,7 +20,7 @@ const pn_col		= 'prioritas_nasional';
 
 let janpres_group	= {};
 
-const palette		= ['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe', '#008080', '#e6beff', '#aa6e28', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000080'];
+// const palette		= ['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe', '#008080', '#e6beff', '#aa6e28', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000080'];
 
 // const palette		= [
 // 	'#F98866','#FF420E','#80BD9E','#89DA59',
@@ -29,6 +29,8 @@ const palette		= ['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#911eb
 // 	'#A1BE95','#E2DFA2','#92AAC7','#ED5752',
 // 	'#5BC8AC','#E6D72A','#F18D9E','#98DBC6',
 // ];
+
+const palette		= ['#d17076', '#eb6090', '#f3a6be', '#98e2e1', '#17a5a3', '#fac999', '#e6790d', '#b24201', '#eac8b5', '#f3f0e2', '#c1ccd4', '#fbe5ad', '#e2c408', '#fdb360', '#af9b95', '#a4bfd9', '#5b92cb', '#787fa0', '#8e9fbb', '#ebf0f7'];
 
 MongoClient.connect(db_url, (err, client) => {
 	assert.equal(null, err);

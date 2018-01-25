@@ -6,7 +6,7 @@ $( document ).ready(() => {
 	createMaps();
 	// createProgress();
 
-	// setTimeout(() => { changeCategory('Nawacita'); }, 1000)
+	setTimeout(() => { changeCategory('Nawacita'); }, 1000)
 
 	// $( '#categories-hamburger' ).click(function() {
 	// 	if ($( this ).hasClass('x-sign')) {

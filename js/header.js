@@ -12,7 +12,7 @@ function changeCategory(val) {
 	$( '#categories-head > span#categories-title' ).html(val);
 	$( '#categories-hamburger' ).removeClass('x-sign');
 
-	getFilters(val, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); });
+	getFilters(val, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); createShittyPie(data.data)});
 	getMaps(val, {}, (data) => { colorMap(data); })
 
 	getLocation(val, {}, (data) => {

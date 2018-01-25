@@ -13,6 +13,7 @@
 			#prov-name { font-size: 11px; font-family: 'SF Bold'; }
 			.prov-detil label { display: block; font-size: 9px; margin-bottom: 2px; }
 		}
+		#pie-tooltip { position: absolute; bottom: 12.5px; left: 20px; }
 	}
 	#detil-content {
 		height: calc(100% - #{$header-height} - 30px); width: 0%; visibility: hidden; @include transition-delay(.75s); padding: 15px;

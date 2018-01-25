@@ -313,10 +313,10 @@ module.exports.location = (input, category_name, callback) => {
 			let match		= {};
 			match[(provinsi ? 'regency_id' : 'province_id')]	= { '$in': locations };
 
-			collection.findAll(match, {}, (err, result) => flowCallback(err, result.map((o) => ({
+			collection.findAll(match, {}, (err, result) => flowCallback(err, _.chain(result).map((o) => ({
 				id: o[(provinsi ? 'regency_id' : 'province_id')],
 				name: o[(provinsi ? 'regency_name' : 'province_name')],
-			}))));
+			})).sortBy('id').value()));
 		}
 	], (err, asyncResult) => {
 		if (err) {

@@ -9,7 +9,7 @@ function createMaps() {
 	let height			= canvasHeight - margin.top - margin.bottom;
 
 	let projection		= d3.geoEquirectangular()
-		.scale((width - (height / 2)) + 225)
+		.scale((width - (height / 2)) + 150)
 		.rotate([-120, 1])
 		.translate([(width * 6 / 10) + 55, (height / 2) - 50]);
 	path	= d3.geoPath().projection(projection);
@@ -28,16 +28,18 @@ function createMaps() {
 		// .attr('transform', 'translate(-' + (width / 8) + ',-' + (height / 8) +  ')')
 		.on('click', () => { zoomProv(null) });
 
+	let circleRad	= (height / 10);
+
 	let addition	= svg.append('g').attr('id', 'addition-wrapper').selectAll('.addition')
 		.data(mapAddition).enter().append('g')
 			.attr('id', (o) => ('prov-wrapper-' + o.kode))
 			.attr('class', 'addition')
-			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + (((height / 12) * (i + 1)) + (height / 3) * (i + 0.5)) + ')'));
+			.attr("transform", (o, i) => ('translate(' + (height / 4) + ',' + ((circleRad * (2 * i + 1)) + (circleRad / 2 * (i + 1))) + ')'));
 
 	addition.append("circle")
 		.attr('id', (o) => ('prov-' + o.kode))
 		.attr('class', 'province')
-	    .attr("r", (height / 8))
+	    .attr("r", circleRad)
 	    .attr("fill", defaultColor);
 
 	addition.append('text')

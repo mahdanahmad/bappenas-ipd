@@ -87,6 +87,11 @@ function zoomProv(prov_id, isMoronic) {
 			.attr('transform', 'translate(' + node.width / 2 + ',' + node.height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')' + (centered ? ('translate(-' + (isNotProv ? node.width * .25 : (node.width * .3 / k)) + ',' + (isNotProv ? .1 * node.height : (.05 * node.height / k)) + ')') : '' ));
 
 		$( '#filters-provinsi .filters-value').html($( '#drop-provinsi-' + (centered ? prov_id : 'default') ).text());
+
+		setTimeout(() => {
+			d3.select( 'g#' + pie_id ).classed('hidden', prov_id);
+		}, (prov_id ? 0 : duration));
+
 	}
 }
 

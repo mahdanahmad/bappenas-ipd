@@ -11,6 +11,9 @@ let centered, path;
 const cate_dest		= '#categories-content';
 const cate_id		= 'categories-viz';
 
+// const pie_dest		= '#content';
+const pie_id		= 'pie_viz';
+
 const shown			= 9;
 const textMarg		= 5;
 

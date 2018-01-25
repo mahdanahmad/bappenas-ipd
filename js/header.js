@@ -50,7 +50,7 @@ function changeDrop(state, id, name) {
 }
 
 function toggleKabDrop(prov_id) {
-	if (prov_id && !_.chain(mapAddition).map('kode').includes(prov_id).value()) {
+	if (prov_id && !_.chain(mapAddition).map('kode').includes(prov_id).value() || _.isNil(prov_id)) {
 		getLocation(category, { provinsi: prov_id }, (data) => { $( '#dropdown-kabupaten > ul' ).html( constructDropdown(data, 'kabupaten', prov_id) ); });
 		$( '#filters-kabupaten .filters-value').html($( '#drop-kabupaten-default' ).text());
 

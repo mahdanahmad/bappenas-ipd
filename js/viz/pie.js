@@ -10,7 +10,8 @@ function createShittyPie(data) {
 		.attr("id", pie_id)
 		.attr("transform", "translate(" + (height / 4) + "," + ((height / 10 * 7.25)) + ")");
 
-	let div = d3.select(map_dest).append("div").attr("id", "pie-tooltip").attr('class', 'hidden');
+	// let div = d3.select(map_dest).append("div").attr("id", "pie-tooltip").attr('class', 'hidden');
+	let div = d3.select(map_dest + ' > div#pie-tooltip');
 
 	let pieFunc	= d3.pie()
     	.sort(null)

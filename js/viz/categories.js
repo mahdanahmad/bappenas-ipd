@@ -14,12 +14,13 @@ function createCategoriesBar(data) {
 
 	if (shown >= data.length) { $( '#categories-right-arrow' ).addClass('nonactive'); } else { $( '#categories-right-arrow' ).removeClass('nonactive'); }
 
-	let margin 			= { top: 0, right: 0, bottom: 0, left: 0 };
+	let margin 			= { top: 0, right: 0, bottom: (shitCate == category ? shitMargin : 0), left: 0 };
+	// let margin 			= { top: 0, right: 0, bottom: 0, left: 0 };
 	let width			= space * data.length;
 	let height			= canvasHeight - margin.top - margin.bottom;
 
 	let x				= d3.scaleBand().rangeRound([0, width]).padding(0).domain(data.map((o) => (o.color)));
-    let y 				= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
+    let y 				= d3.scaleLinear().rangeRound([Math.floor(height / 2), 0]).domain([0, _.chain(data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
 	let svg	= d3.select(cate_dest).append("svg")
 		.attr("id", cate_id)
@@ -74,8 +75,36 @@ function createCategoriesBar(data) {
 		.attr('x', (o) => (x(o.color)))
 		.attr('y', 0)
 		.attr('width', space)
-		.attr('height', height)
+		.attr('height', height);
+
+	groupBar
 		.on('click', (o) => categorySelect(o));
+
+	if (shitCate == category) {
+		let expandButton	= svg.selectAll('expand-button').data(data).enter()
+			.append('g')
+				.attr('class', 'expand-button')
+				.attr('transform', (o) => ('translate(' + x(o.color) + ',' + height + ')'))
+
+		expandButton.append('text')
+			.attr('x', x.bandwidth() / 2)
+			.attr('y', shitMargin / 2)
+			.attr('text-anchor', 'middle')
+			.attr('alignment-baseline', 'central')
+			.text('Expand');
+
+		expandButton.append('rect')
+			.attr('class', 'expand-overlay cursor-pointer')
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr('width', x.bandwidth())
+			.attr('height', shitMargin)
+
+		expandButton
+			.on('click', (o) => {
+
+			});
+	}
 
 	changeCateHeight(formData(data, height, y));
 
@@ -119,7 +148,7 @@ function changeCateHeight(data) {
 
 	canvas.selectAll('.bar.fill').transition(transition)
         .attr('y', (o) => (data[o.color].fill))
-        .attr('height', (o) => (data[o.color].fill));
+        .attr('height', (o) => (data[o.color].height));
 
 	canvas.selectAll('.bar.cream').transition(transition)
         .attr('y', (o) => (data[o.color].cream));
@@ -133,7 +162,7 @@ function categorySelect(data) {
 	$( '.group-bar#' + data.kode ).toggleClass('unintended');
 
 	clearTimeout(categoryTimeout);
-
+	//
 	categoryTimeout	= setTimeout(() => {
 		activeFilter	= $(' .group-bar:not(.unintended) ').map(function() {
 			let currText	= $( this ).attr('id');
@@ -146,5 +175,5 @@ function categorySelect(data) {
 }
 
 function formData(val, height, y) {
-	return _.chain(val).keyBy('color').mapValues((o) => ({ fill: (height / 2) + y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) + (o.percentage !== 0 ? ' (' + o.percentage + '%)' : '') })).value();
+	return _.chain(val).keyBy('color').mapValues((o) => ({ anggaran: o.anggaran, y: y(o.anggaran), half: (height / 2), fill: (height / 2) + y(o.anggaran), height: (height / 2) - y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) + (o.percentage !== 0 ? ' (' + o.percentage + '%)' : '') })).value();
 }

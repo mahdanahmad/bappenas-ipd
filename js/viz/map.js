@@ -8,9 +8,10 @@ function createMaps() {
 	let width			= canvasWidth - margin.right - margin.left;
 	let height			= canvasHeight - margin.top - margin.bottom;
 
-	let projection		= d3.geoEquirectangular()
+	let projection		= d3.geoMercator()
 		.scale((width - (height / 2)) + 150)
-		.rotate([-120, 1])
+		// .rotate([-120, 1])
+		.center([121, -1.25])
 		.translate([(width * 6 / 10) + 55, (height / 2) - 50]);
 	path	= d3.geoPath().projection(projection);
 

@@ -63,29 +63,29 @@ MongoClient.connect(db_url, (err, client) => {
 			let iterate	= 0;
 			let label	= '100 Janji Presiden';
 
-			// csv
-			// 	.fromPath(data_root + 'labels/' + label + '.csv', params)
-			// 	.on("data", (row) => { raw.push(_.assign(row, { 'KODE': _.toInteger(row.KODE) })); })
-			// 	.on("end", () => {
-			// 		let filters	= _.chain(raw).groupBy('NOMENKLATUR').map((o, key) => ({
-			// 			'NOMENKLATUR': key,
-			// 			detil: _.map(o, (d) => ({ 'KODE': d.KODE, 'NOMENKLATUR': d.DETIL }))
-			// 		})).map((o, key) => (_.assign(o, { 'KODE': (key + 1), color: palette[(key)] }))).value();
-			//
-			// 		let groupMapped	= _.chain(filters).map((o) => ([o.NOMENKLATUR, o.KODE])).fromPairs().value();
-			// 		janpres_group	= _.chain(raw).map((o) => ([o.KODE, groupMapped[o.NOMENKLATUR]])).fromPairs().value();
-			//
-			// 		db.collection(cate_coll).insert({ name: label, filters }, (err, result) => flowCallback(err));
-			// 	});
-
-			let filters	= [];
 			csv
 				.fromPath(data_root + 'labels/' + label + '.csv', params)
-				.on("data", (row) => {
-					filters.push(_.assign({}, row, { 'KODE': _.toInteger(row.KODE), color: palette[iterate] || randomColor() }));
-					iterate++;
-				})
-				.on("end", () => { db.collection(cate_coll).insert({ name: label, filters }, (err, result) => flowCallback(err)); });
+				.on("data", (row) => { raw.push(_.assign(row, { 'KODE': _.toInteger(row.KODE) })); })
+				.on("end", () => {
+					let filters	= _.chain(raw).groupBy('GROUP').map((o, key) => ({
+						'NOMENKLATUR': key,
+						detil: _.map(o, (d, i) => ({ 'KODE': _.toInteger(d.KODE), 'NOMENKLATUR': d.NOMENKLATUR, color: palette[i] }))
+					})).map((o, key) => (_.assign(o, { 'KODE': (key + 1), color: palette[(key)] }))).value();
+
+					let groupMapped	= _.chain(filters).map((o) => ([o.NOMENKLATUR, o.KODE])).fromPairs().value();
+					janpres_group	= _.chain(raw).map((o) => ([o.KODE, groupMapped[o.GROUP]])).fromPairs().value();
+
+					db.collection(cate_coll).insert({ name: label, filters }, (err, result) => flowCallback(err));
+				});
+
+			// let filters	= [];
+			// csv
+			// 	.fromPath(data_root + 'labels/' + label + '.csv', params)
+			// 	.on("data", (row) => {
+			// 		filters.push(_.assign({}, row, { 'KODE': _.toInteger(row.KODE), color: palette[iterate] || randomColor() }));
+			// 		iterate++;
+			// 	})
+			// 	.on("end", () => { db.collection(cate_coll).insert({ name: label, filters }, (err, result) => flowCallback(err)); });
 		},
 		(flowCallback) => {
 			async.map(['KP', 'PN', 'PP'], (o, eachCallback) => {
@@ -129,7 +129,7 @@ MongoClient.connect(db_url, (err, client) => {
 				.on('data', (row) => {
 					let picked	= _.chain(row).clone().assign({
 						anggaran: parseInt(row.Anggaran.split('.').join('')),
-						// janpres_group: '' + janpres_group[row.Janpres] || null,
+						janpres_group: '' + janpres_group[row.Janpres] || null,
 						provinsi: row.provinsi == '' ? null : (mapped_ids.provinces[row.kd_prov] || mapped_ids.provinces['']),
 						kabupaten: mapped_ids.regencies[row.kd_kota] || null,
 						Tematik: _.last(row.Tematik) == ',' ? row.Tematik.slice(0, -1) : row.Tematik,

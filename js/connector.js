@@ -71,7 +71,7 @@ function zoomProv(prov_id, isMoronic) {
 		}
 
 		getFilters(category, _.omitBy({ kementerian, provinsi: centered }, _.isNil), (data) => {
-			let height	= $(cate_dest).outerHeight(true);
+			let height	= d3.select(cate_dest + ' > svg > g > .group-bar').node().getBBox().height;
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
 			changeCateHeight(formData(data.data, height, y));

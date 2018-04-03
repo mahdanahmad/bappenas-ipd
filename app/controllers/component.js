@@ -10,10 +10,13 @@ const defaultColor	= '#5a6569';
 const categoriesMap	= {
 	'Tematik': 'Tematik',
 	'Nawacita': 'kd_nawacita',
-	// '100 Janji Presiden': 'janpres_group',
-	'100 Janji Presiden': 'Janpres',
+	'100 Janji Presiden': 'janpres_group',
+	// '100 Janji Presiden': 'Janpres',
 	'Prioritas Nasional': 'kd_PN',
 }
+
+const shitCate		= '100 Janji Presiden';
+const shitColumn	= 'Janpres';
 
 module.exports.categories = (callback) => {
 	let response        = 'OK';
@@ -46,21 +49,28 @@ module.exports.filters = (input, category_name, callback) => {
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian	: null;
 	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi	: null;
 	const kabupaten		= !_.isNil(input.kabupaten)		? input.kabupaten	: null;
+	const shitdetil		= !_.isNil(input.shit)			? input.shit		: null;
 
 	async.waterfall([
 		(flowCallback) => {
-			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			if (category_name == shitCate && shitdetil) {
+				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': 1 }).get('detil', []).value()));
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			}
 		},
 		(categories, flowCallback) => {
-			let filters		= _.chain(categories).get('filters', []).value();
+			let filters		= shitdetil ? categories : _.chain(categories).get('filters', []).value();
 			let colors		= _.get(categories, 'colors', {});
 
-			let column		= categoriesMap[category_name];
+			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= {};
 			match[column]	= { '$in': filters.map((o) => (new RegExp(o.KODE))) };
 			if (provinsi) { match.provinsi = provinsi; }
 			if (kabupaten) { match.kabupaten = kabupaten; }
 			if (kementerian) { match.kd_kementerian = kementerian; }
+
+			console.log(match);
 
 			krisna.rawAggregate([
 				{ '$match': match },

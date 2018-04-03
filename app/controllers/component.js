@@ -10,7 +10,8 @@ const defaultColor	= '#5a6569';
 const categoriesMap	= {
 	'Tematik': 'Tematik',
 	'Nawacita': 'kd_nawacita',
-	'100 Janji Presiden': 'janpres_group',
+	// '100 Janji Presiden': 'janpres_group',
+	'100 Janji Presiden': 'Janpres',
 	'Prioritas Nasional': 'kd_PN',
 }
 

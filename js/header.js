@@ -37,6 +37,7 @@ function changeDrop(state, id, name) {
 			let y		= d3.scaleLinear().rangeRound([height / 2, 0]).domain([0, _.chain(data.data).maxBy('anggaran').get('anggaran', 0).multiply(1.1).value()]);
 
 			changeCateHeight(formData(data.data, height, y));
+			createShittyPie(data.data);
 			$( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total));
 		});
 

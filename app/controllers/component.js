@@ -54,7 +54,7 @@ module.exports.filters = (input, category_name, callback) => {
 	async.waterfall([
 		(flowCallback) => {
 			if (category_name == shitCate && shitdetil) {
-				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': 1 }).get('detil', []).value()));
+				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).value()));
 			} else {
 				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
 			}
@@ -69,8 +69,6 @@ module.exports.filters = (input, category_name, callback) => {
 			if (provinsi) { match.provinsi = provinsi; }
 			if (kabupaten) { match.kabupaten = kabupaten; }
 			if (kementerian) { match.kd_kementerian = kementerian; }
-
-			console.log(match);
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -108,10 +106,15 @@ module.exports.maps = (input, category_name, callback) => {
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi				: null;
+	const shitdetil		= !_.isNil(input.shit)			? input.shit					: null;
 
 	async.waterfall([
 		(flowCallback) => {
-			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			if (category_name == shitCate && shitdetil) {
+				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).value()));
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			}
 		},
 		(categories, flowCallback) => {
 			if (provinsi) {
@@ -121,10 +124,10 @@ module.exports.maps = (input, category_name, callback) => {
 			}
 		},
 		(categories, locations, flowCallback) => {
-			let filt	= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
+			let filt	= (filters || (shitdetil ? categories : _.chain(categories).get('filters', []).value()).map((o) => (o.KODE)));
 			let colors	= _.chain(categories).get('filters', []).map((o) => ([o.KODE, o.color])).fromPairs().value();
 
-			let column	= categoriesMap[category_name];
+			let column	= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			match[(provinsi ? 'kabupaten' : 'provinsi')]	= { '$in': locations };
@@ -169,15 +172,20 @@ module.exports.detillocation = (input, category_name, callback) => {
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
 	const provinsi		= !_.isNil(input.provinsi)		? input.provinsi				: null;
 	const kabupaten		= !_.isNil(input.kabupaten)		? input.kabupaten				: null;
+	const shitdetil		= !_.isNil(input.shit)			? input.shit					: null;
 
 	async.waterfall([
 		(flowCallback) => {
-			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			if (category_name == shitCate && shitdetil) {
+				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).value()));
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			}
 		},
 		(categories, flowCallback) => {
-			let filt	= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
+			let filt	= (filters || (shitdetil ? categories : _.chain(categories).get('filters', []).value()).map((o) => (o.KODE)));
 
-			let column	= categoriesMap[category_name];
+			let column	= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match	= {};
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			if (kementerian) { match.kd_kementerian = kementerian; }
@@ -216,15 +224,20 @@ module.exports.getOutput = (input, category_name, provinsi, kabupaten, callback)
 	const like			= !_.isNil(input.like)			? input.like					: null;
 	const filters		= !_.isNil(input.filters)		? JSON.parse(input.filters)		: null;
 	const kementerian	= !_.isNil(input.kementerian)	? input.kementerian				: null;
+	const shitdetil		= !_.isNil(input.shit)			? input.shit					: null;
 
 	async.waterfall([
 		(flowCallback) => {
-			categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			if (category_name == shitCate && shitdetil) {
+				categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).value()));
+			} else {
+				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, result));
+			}
 		},
 		(categories, flowCallback) => {
-			let filt		= (filters || _.chain(categories).get('filters', []).map('KODE').uniq().value());
+			let filt		= (filters || (shitdetil ? categories : _.chain(categories).get('filters', []).value()).map((o) => (o.KODE)));
 
-			let column		= categoriesMap[category_name];
+			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= { provinsi };
 			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
 			let sort		= {};

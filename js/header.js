@@ -2,6 +2,9 @@ function changeCategory(val) {
 	category		= val;
 	activeFilter	= null;
 	kementerian		= null;
+	shit			= null;
+
+	if (centered) { zoomProv(null); }
 
 	$( '#selection' ).slideUp(() => {
 		// $( '#categories-hamburger' ).removeClass('hidden');

@@ -18,6 +18,8 @@ const categoriesMap	= {
 const shitCate		= '100 Janji Presiden';
 const shitColumn	= 'Janpres';
 
+const multipleCate	= ['Tematik'];
+
 module.exports.categories = (callback) => {
 	let response        = 'OK';
 	let status_code     = 200;
@@ -65,7 +67,7 @@ module.exports.filters = (input, category_name, callback) => {
 
 			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= {};
-			match[column]	= { '$in': filters.map((o) => (new RegExp(o.KODE))) };
+			match[column]	= { '$in': filters.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o.KODE) : "" + o.KODE)) };
 			if (provinsi) { match.provinsi = provinsi; }
 			if (kabupaten) { match.kabupaten = kabupaten; }
 			if (kementerian) { match.kd_kementerian = kementerian; }
@@ -125,11 +127,11 @@ module.exports.maps = (input, category_name, callback) => {
 		},
 		(categories, locations, flowCallback) => {
 			let filt	= (filters || (shitdetil ? categories : _.chain(categories).get('filters', []).value()).map((o) => (o.KODE)));
-			let colors	= _.chain(categories).get('filters', []).map((o) => ([o.KODE, o.color])).fromPairs().value();
+			let colors	= _.chain((shitdetil ? categories : _.get(categories, 'filters', []))).map((o) => ([o.KODE, o.color])).fromPairs().value();
 
 			let column	= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match	= {};
-			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o) : "" + o)) };
 			match[(provinsi ? 'kabupaten' : 'provinsi')]	= { '$in': locations };
 			if (kementerian) { match.kd_kementerian = kementerian; }
 
@@ -145,8 +147,6 @@ module.exports.maps = (input, category_name, callback) => {
 						filter: _.chain(o.data).flatMap((d) => (d.column.split(',').map((id) => ({ id, anggaran: d.anggaran })))).groupBy('id').pick(filt).mapValues((o) => _.sumBy(o, 'anggaran')).toPairs().maxBy((d) => (d[1])).get('0', '').value()
 					})).map((o) => ([o._id, _.get(colors, o.filter, null)])).fromPairs().value();
 					flowCallback(null, locations.map((o) => ({ _id: o, color: _.get(formatted, o, defaultColor) })));
-					// })).value();
-					// flowCallback(null, formatted);
 				}
 			});
 		}
@@ -187,7 +187,7 @@ module.exports.detillocation = (input, category_name, callback) => {
 
 			let column	= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match	= {};
-			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o) : "" + o)) };
 			if (kementerian) { match.kd_kementerian = kementerian; }
 			if (provinsi) { match.provinsi = provinsi; }
 			if (kabupaten) { match.kabupaten = kabupaten; }
@@ -239,7 +239,7 @@ module.exports.getOutput = (input, category_name, provinsi, kabupaten, callback)
 
 			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= { provinsi };
-			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o) : "" + o)) };
 			let sort		= {};
 			sort[sortby]	= -1;
 			if (kementerian) { match.kd_kementerian = kementerian; }
@@ -273,19 +273,24 @@ module.exports.kementerian = (input, category_name, callback) => {
 	let result          = null;
 
 	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
+	const shitdetil		= !_.isNil(input.shit)		? input.shit					: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			if (filters) {
 				flowCallback(null, filters);
 			} else {
-				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
+				if (category_name == shitCate && shitdetil) {
+					categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).map('KODE').uniq().value()));
+				} else {
+					categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
+				}
 			}
 		},
 		(filt, flowCallback) => {
-			let column		= categoriesMap[category_name];
+			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= {};
-			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o) : "" + o)) };
 
 			krisna.rawAggregate([
 				{ '$match': match },
@@ -314,19 +319,24 @@ module.exports.location = (input, category_name, callback) => {
 
 	const filters		= !_.isNil(input.filters)	? JSON.parse(input.filters)		: null;
 	const provinsi		= !_.isNil(input.provinsi)	? input.provinsi				: null;
+	const shitdetil		= !_.isNil(input.shit)		? input.shit					: null;
 
 	async.waterfall([
 		(flowCallback) => {
 			if (filters) {
 				flowCallback(null, filters);
 			} else {
-				categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
+				if (category_name == shitCate && shitdetil) {
+					categories.findOne({ name: shitCate }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).find({ 'KODE': parseInt(shitdetil) }).get('detil', []).map('KODE').uniq().value()));
+				} else {
+					categories.findOne({ name: category_name }, (err, result) => flowCallback(err, _.chain(result).get('filters', []).map('KODE').uniq().value()));
+				}
 			}
 		},
 		(filt, flowCallback) => {
-			let column		= categoriesMap[category_name];
+			let column		= shitdetil ? shitColumn : categoriesMap[category_name];
 			let match		= {};
-			match[column]	= { '$in': filt.map((o) => (new RegExp(o))) };
+			match[column]	= { '$in': filt.map((o) => (_.includes(multipleCate, category_name) ? new RegExp(o) : "" + o)) };
 			if (provinsi) { match.provinsi = provinsi; }
 
 			krisna.distinct((provinsi ? 'kabupaten' : 'provinsi'), match, (err, result) => flowCallback(err, _.compact(result)));

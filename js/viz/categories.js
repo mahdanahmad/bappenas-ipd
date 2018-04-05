@@ -14,7 +14,7 @@ function createCategoriesBar(data) {
 
 	if (shown >= data.length) { $( '#categories-right-arrow' ).addClass('nonactive'); } else { $( '#categories-right-arrow' ).removeClass('nonactive'); }
 
-	let margin 			= { top: 0, right: 0, bottom: (shitCate == category ? shitMargin : 0), left: 0 };
+	let margin 			= { top: 0, right: 0, bottom: (shitCate == category && _.isNil(shit) ? shitMargin : 0), left: 0 };
 	// let margin 			= { top: 0, right: 0, bottom: 0, left: 0 };
 	let width			= space * data.length;
 	let height			= canvasHeight - margin.top - margin.bottom;
@@ -80,7 +80,7 @@ function createCategoriesBar(data) {
 	groupBar
 		.on('click', (o) => categorySelect(o));
 
-	if (shitCate == category) {
+	if (shitCate == category && _.isNil(shit)) {
 		let expandButton	= svg.selectAll('expand-button').data(data).enter()
 			.append('g')
 				.attr('class', 'expand-button')
@@ -102,7 +102,9 @@ function createCategoriesBar(data) {
 
 		expandButton
 			.on('click', (o) => {
-
+				shit	= o.kode;
+				$( '#categories-head > .shitty-back' ).removeClass('hidden');
+				toggleShittyData(o);
 			});
 	}
 
@@ -148,7 +150,7 @@ function changeCateHeight(data) {
 
 	canvas.selectAll('.bar.fill').transition(transition)
         .attr('y', (o) => (data[o.color].fill))
-        .attr('height', (o) => (data[o.color].height));
+        .attr('height', (o) => (data[o.color].height > 0 ? data[o.color].height : 0));
 
 	canvas.selectAll('.bar.cream').transition(transition)
         .attr('y', (o) => (data[o.color].cream));
@@ -176,4 +178,19 @@ function categorySelect(data) {
 
 function formData(val, height, y) {
 	return _.chain(val).keyBy('color').mapValues((o) => ({ anggaran: o.anggaran, y: y(o.anggaran), half: (height / 2), fill: (height / 2) + y(o.anggaran), height: (height / 2) - y(o.anggaran), cream: (height / 2) - 2 + y(o.anggaran), text: nFormatter(o.anggaran) + (o.percentage !== 0 ? ' (' + o.percentage + '%)' : '') })).value();
+}
+
+function toggleShittyData(o) {
+	if (centered) { zoomProv(null); }
+	$( '#categories-head > span#categories-title' ).html(shitCate + ( o ? ' - ' + o.name : '' ));
+
+	getFilters(shitCate, {}, (data) => { createCategoriesBar(data.data); $( '#categories-head > span#categories-anggaran' ).text(nFormatter(data.total)); createShittyPie(data.data)});
+	getMaps(shitCate, {}, (data) => { colorMap(data); })
+
+	getLocation(shitCate, {}, (data) => {
+		$( '#dropdown-provinsi > ul' ).html( constructDropdown(data, 'provinsi') );
+	});
+	getKementerian(shitCate, {}, (data) => {
+		$( '#dropdown-kementerian > ul' ).html( constructDropdown(data, 'kementerian') );
+	});
 }

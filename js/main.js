@@ -23,7 +23,7 @@ $( document ).ready(() => {
 		} else if ($( this ).hasClass('fa-home')) {
 			$( '#selection' ).slideDown();
 		}
-		$( '#categories-head > i' ).toggleClass('hidden');
+		$( '#categories-head > i:not(.shitty-back)' ).toggleClass('hidden');
 	});
 
 	// $('#detil-wrapper > table > tbody').endlessScroll({
@@ -49,4 +49,10 @@ $( document ).ready(() => {
 	});
 
 	$( '#backtomap' ).click(() => { if (backState == 'peta') { zoomProv(null); } else { toggleOutput(null); } });
+
+	$( '#categories-head > .shitty-back' ).click(() => {
+		shit	= null;
+		$( '#categories-head > .shitty-back' ).addClass('hidden');
+		toggleShittyData();
+	});
 });

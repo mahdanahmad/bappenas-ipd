@@ -27,5 +27,6 @@ let kementerian		= null;
 
 const shitCate		= "100 Janji Presiden";
 const shitMargin	= 30;
+let shit			= null;
 
 let backState		= 'peta';

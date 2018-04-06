@@ -33,7 +33,7 @@
 			span#categories-title { margin-left: $arrow-width; }
 			i:not(.shitty-back) { position: absolute; font-size: 20px; right: 10px; top: 4px; }
 			i.fa-times { z-index: 100; }
-			i.shitty-back { position: absolute; font-size: 26px; top: calc(50% - 13px); left: 10px; }
+			i.shitty-back { position: absolute; font-size: 22px; top: calc(50% - 11px); left: 8px; }
 			span.shitty-back { text-decoration: underline; margin-left: 5px; }
 			// #categories-hamburger {
 			// 	z-index: 100; width: 1.75%; height: $head-height * 2 / 4; position: absolute; margin: #{$head-height / 4} 0; @include transform(rotate(0deg)); @include transition(.5s ease-in-out); top: 0px; right: 1%;
